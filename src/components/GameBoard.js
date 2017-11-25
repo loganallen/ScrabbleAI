@@ -15,7 +15,7 @@ class GameBoard extends React.Component {
     };
   }
 
-  getGameBoard(): Array {
+  getGameBoardBase(): Array {
     let board = [];
     for (let i=0; i<15; i++) {
       board[i] = [];
@@ -37,7 +37,7 @@ class GameBoard extends React.Component {
   }
 
   _gameBoard = (): Grid => {
-    let board = this.getGameBoard();
+    let board = this.getGameBoardBase();
 
     let rows = [];
     for (let r=0; r<15; r++) {
@@ -48,7 +48,7 @@ class GameBoard extends React.Component {
         );
       }
       rows.push(
-        <div style={styles.row}>
+        <div key={r}>
           {spaces}
         </div>
       );
@@ -64,7 +64,6 @@ class GameBoard extends React.Component {
   render() {
     return (
       <div style={styles.board}>
-        <h2>Game Board</h2>
         {this._gameBoard()}
       </div>
     );
@@ -73,21 +72,8 @@ class GameBoard extends React.Component {
 
 const styles = {
   board: {
-    margin: '25px auto',
-    width: '525px'
-  },
-  row: {
-
-  },
-  test: {
-    backgroundColor: 'red',
-    margin: '1px',
-    width: '28px',
-    height: '28px',
-    borderRadius: '4px',
-    textAlign: 'center',
-    color: 'white',
-    display: 'inline-block'
+    padding: '25px',
+    width: '575px'
   }
 }
 

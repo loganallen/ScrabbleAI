@@ -5,6 +5,7 @@ import {
 
 type Props = {
   tile?: Object,
+  key: string,
   spaceType: string
 }
 
@@ -17,18 +18,21 @@ class BoardSpace extends React.Component {
   }
 
   abbreviateSpaceType(spaceType: string) {
-    if (spaceType == 'DEFAULT') return '__';
-    if (spaceType == 'START') return 'ST';
+    if (spaceType === 'DEFAULT') return '__';
+    if (spaceType === 'START') return 'ST';
     return spaceType.split('_').reduce((acc, el) => acc + el.charAt(0), '');
   }
 
   render() {
     const bonus = this.abbreviateSpaceType(this.props.spaceType);
     return (
-      <div style={{
-        ...styles.space,
-        ...styles[this.props.spaceType]
-      }}>
+      <div
+        key={this.props.key}
+        style={{
+          ...styles.space,
+          ...styles[this.props.spaceType]
+        }}
+      >
         <p style={bonus === '__' ? styles.noBonus : {}}>{bonus}</p>
       </div>
     );
