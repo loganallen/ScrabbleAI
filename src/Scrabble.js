@@ -1,67 +1,25 @@
 import React from 'react';
-import {
-  Header
-} from 'semantic-ui-react';
-import _ from 'underscore';
+import { connect } from 'react-redux';
+import { Header } from 'semantic-ui-react';
 
 import GameBoard from './components/GameBoard';
 import Hand from './components/Hand';
-import { scrabbleLetters } from './models';
+
+type Props = {
+  tiles: Array,
+  players: Array,
+  turn: string
+};
 
 class Scrabble extends React.Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    const tiles = this.initiateTiles();
-    const players = {
-      'p1': {
-        hand: [],
-        score: 0
-      },
-      'p2': {
-        hand: [],
-        score: 0
-      }
-    };
-    for (let i=0; i<7; i++) {
-      players['p1'].hand.push(tiles.pop());
-      players['p2'].hand.push(tiles.pop());
-    }
-
     this.state = {
-      tiles: tiles,
-      players: players,
-      turn: Object.keys(players)[0]
+
     };
-  }
-
-  componentDidMount() {
-    console.log('Scrabble did mount');
-    // Initialize the game board
-  }
-
-  initiateTiles() {
-    let tiles = [];
-
-    Object.keys(scrabbleLetters).forEach(value => {
-      const letters = scrabbleLetters[value];
-      letters.forEach(letter => {
-        for (let i=0; i<letter[1]; i++) {
-          tiles.push({
-            letter: letter[0],
-            value: Number(value)
-          });
-        }
-      });
-    });
-
-    for (let i=0; i<5; i++) {
-      tiles = _.shuffle(tiles);
-    }
-    return tiles;
   }
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <Header>Scrabble.ai</Header>
@@ -69,8 +27,8 @@ class Scrabble extends React.Component {
           <GameBoard />
         </div>
         <div style={styles.playerHands}>
-          <Hand {...this.state.players['p1']} />
-          <Hand {...this.state.players['p2']} />
+          <Hand {...this.props.players['p1']} />
+          <Hand {...this.props.players['p2']} />
         </div>
       </div>
     );
@@ -90,4 +48,17 @@ const styles = {
   }
 }
 
-export default Scrabble;
+const mapState = (state) => {
+  console.log('Scrabble state', state);
+  return {
+    ...state.scrabble
+  };
+};
+
+const mapDispatch = (dispatch) => {
+  return {
+
+  };
+};
+
+export default connect(mapState, mapDispatch)(Scrabble);

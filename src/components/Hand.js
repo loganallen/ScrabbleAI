@@ -20,15 +20,12 @@ class Hand extends React.Component {
     };
   }
 
-  onSelectTile = ()
-
   _hand(): Array {
-    const tiles = this.props.hand.map(tile => (
+    const tiles = this.props.hand.map((tile, idx) => (
       <Tile
+        key={idx}
         letter={tile.letter}
         value={tile.value}
-        available={}
-        onClick={}
       />
     ));
     return tiles;

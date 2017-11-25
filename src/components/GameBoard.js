@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   Grid,
   Button
 } from 'semantic-ui-react';
+import ScrabbleActions from '../actions';
 
 import BoardSpace from './BoardSpace';
 import {boardSpaceMap} from '../models';
@@ -75,6 +77,19 @@ const styles = {
     padding: '25px',
     width: '575px'
   }
-}
+};
 
-export default GameBoard;
+const mapState = (store) => {
+  console.log(store);
+  return {
+    ...store.board
+  };
+};
+
+const mapDispatch = (dispatch) => {
+  return {
+    onDropTile: dispatch(ScrabbleActions.onDropTile())
+  };
+};
+
+export default connect(mapState, mapDispatch)(GameBoard);
