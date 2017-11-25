@@ -17,17 +17,19 @@ class BoardSpace extends React.Component {
   }
 
   abbreviateSpaceType(spaceType: string) {
-    if (spaceType == 'DEFAULT' || spaceType == 'START') return '';
+    if (spaceType == 'DEFAULT') return '__';
+    if (spaceType == 'START') return 'ST';
     return spaceType.split('_').reduce((acc, el) => acc + el.charAt(0), '');
   }
 
   render() {
+    const bonus = this.abbreviateSpaceType(this.props.spaceType);
     return (
       <div style={{
         ...styles.space,
         ...styles[this.props.spaceType]
       }}>
-        {this.abbreviateSpaceType(this.props.spaceType)}
+        <p style={bonus === '__' ? styles.noBonus : {}}>{bonus}</p>
       </div>
     );
   }
@@ -35,11 +37,18 @@ class BoardSpace extends React.Component {
 
 const styles = {
   space: {
-    height: '45px',
-    paddingTop: '12px',
+    backgroundColor: 'red',
+    margin: '1px',
+    paddingTop: '9px',
+    width: '33px',
+    height: '33px',
     borderRadius: '4px',
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
+    display: 'inline-block'
+  },
+  noBonus: {
+    color: 'gray'
   },
   DOUBLE_WORD: {
     backgroundColor: 'red'
