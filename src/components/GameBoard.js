@@ -7,59 +7,49 @@ import {
 import ScrabbleActions from '../actions';
 
 import BoardSpace from './BoardSpace';
-import {boardSpaceMap} from '../models';
+
+type Props = {
+  board: Array,
+  selectedTile?: Object,
+  onDropTile: (Object, Array) => void
+};
 
 class GameBoard extends React.Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      tiles: []
+
     };
   }
 
-  getGameBoardBase(): Array {
-    let board = [];
-    for (let i=0; i<15; i++) {
-      board[i] = [];
+  onBoardSpaceClick = (boardSpace) => {
+    console.log('Space clicked');
+    if (this.props.selectedTile && !boardSpace.isSet) {
+      console.log('Dropping tile...');
+      this.props.onDropTile(this.props.selectedtile, boardSpace.location);
     }
-    Object.keys(boardSpaceMap).forEach(key => {
-      let locs = boardSpaceMap[key];
-      locs.forEach(loc => {
-        let spots = loc.split(',');
-        board[spots[0]-1][spots[1]-1] = key;
-      });
-    });
-    for (let r=0; r<15; r++) {
-      for (let c=0; c<15; c++) {
-        if (board[r][c]) continue;
-        board[r][c] = 'DEFAULT';
-      }
-    }
-    return board;
   }
 
   _gameBoard = (): Grid => {
-    let board = this.getGameBoardBase();
-
     let rows = [];
     for (let r=0; r<15; r++) {
       let spaces = [];
       for (let c=0; c<15; c++) {
         spaces.push(
-          <BoardSpace key={[r,c].join('_')} spaceType={board[r][c]} />
+          <BoardSpace
+            location={[r,c]}
+            data={this.props.board[r][c]}
+            onClick={this.onBoardSpaceClick}
+          />
         );
       }
       rows.push(
-        <div key={r}>
-          {spaces}
-        </div>
+        <div key={r}>{spaces}</div>
       );
     }
 
     return (
-      <Grid>
-        {rows}
-      </Grid>
+      <Grid>{rows}</Grid>
     );
   }
 
@@ -80,7 +70,6 @@ const styles = {
 };
 
 const mapState = (store) => {
-  console.log(store);
   return {
     ...store.board
   };
@@ -88,7 +77,7 @@ const mapState = (store) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    onDropTile: dispatch(ScrabbleActions.onDropTile())
+    onDropTile: (tile, loc) => dispatch(ScrabbleActions.onDropTile(tile, loc))
   };
 };
 

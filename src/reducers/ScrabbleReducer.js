@@ -19,7 +19,7 @@ const initiateScrabbleState = () => {
     tiles = _.shuffle(tiles);
   }
 
-  const players = {
+  let players = {
     'p1': { hand: [], score: 0 },
     'p2': { hand: [], score: 0 }
   };
@@ -30,7 +30,8 @@ const initiateScrabbleState = () => {
 
   return {
     tiles,
-    players
+    players,
+    turn: 'p1'
   };
 }
 

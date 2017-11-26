@@ -27,8 +27,14 @@ class Scrabble extends React.Component {
           <GameBoard />
         </div>
         <div style={styles.playerHands}>
-          <Hand {...this.props.players['p1']} />
-          <Hand {...this.props.players['p2']} />
+          <Hand
+            {...this.props.players['p1']}
+            onTilePick={this.props.onTilePick}
+          />
+          <Hand
+            {...this.props.players['p2']}
+            onTilePick={this.props.onTilePick}
+          />
         </div>
       </div>
     );
@@ -49,7 +55,7 @@ const styles = {
 }
 
 const mapState = (state) => {
-  console.log('Scrabble state', state);
+  console.log('Global state', state);
   return {
     ...state.scrabble
   };
@@ -57,7 +63,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-
+    onTilePick: (tile, idx) => dispatch(ScrabbleActions.onTilePick(tile, idx))
   };
 };
 
