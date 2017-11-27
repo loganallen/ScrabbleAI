@@ -19,7 +19,7 @@ class BoardSpace extends React.Component {
 
   abbreviateSpaceType(spaceType: string) {
     if (spaceType === 'DEFAULT') return '__';
-    if (spaceType === 'START') return 'ST';
+    if (spaceType === 'START') return '★';
     return spaceType.split('_').reduce((acc, el) => acc + el.charAt(0), '');
   }
 
@@ -34,7 +34,7 @@ class BoardSpace extends React.Component {
         }}
         onClick={this.props.onClick}
       >
-        <p style={bonus === '__' ? styles.noBonus : {}}>{bonus}</p>
+        <p style={this.props.type === 'DEFAULT' ? styles.noBonus : {}}>{bonus}</p>
         {this.props.tile && (
           <div style={styles.tile}>
             {this.props.tile.letter}

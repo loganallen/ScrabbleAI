@@ -1,7 +1,7 @@
 import React from 'react';
 
 type Props = {
-  key: string,
+  id: number,
   letter: string,
   value: number,
   onBoard: boolean,
@@ -19,7 +19,7 @@ class Tile extends React.Component {
   render() {
     return (
       <div
-        key={this.props.key}
+        key={this.props.id}
         style={{
           ...styles.tile,
           ...(this.props.onBoard ? styles.onBoard : {})
