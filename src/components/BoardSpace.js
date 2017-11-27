@@ -3,7 +3,9 @@ import {  } from 'semantic-ui-react';
 
 type Props = {
   location: Array,
-  data: Object,
+  type: string,
+  tile?: Object,
+  isSet: boolean,
   onClick: (Object) => void
 }
 
@@ -22,22 +24,22 @@ class BoardSpace extends React.Component {
   }
 
   render() {
-    const bonus = this.abbreviateSpaceType(this.props.data.type);
+    const bonus = this.abbreviateSpaceType(this.props.type);
     return (
       <div
-        key={this.props.data.location.join('_')}
+        key={this.props.location.join('_')}
         style={{
           ...styles.space,
-          ...styles[this.props.data.type]
+          ...styles[this.props.type]
         }}
-        onClick={ () => this.props.onClick(this.props.data) }
+        onClick={this.props.onClick}
       >
         <p style={bonus === '__' ? styles.noBonus : {}}>{bonus}</p>
-        {this.props.data.tile && (
+        {this.props.tile && (
           <div style={styles.tile}>
-            {this.props.data.tile.letter}
+            {this.props.tile.letter}
             <div style={styles.tileValue}>
-              {this.props.data.tile.value}
+              {this.props.tile.value}
             </div>
           </div>
         )}
@@ -83,8 +85,8 @@ const styles = {
   },
   tile: {
     position: 'absolute',
-    top: '0',
-    left: '0',
+    top: '0px',
+    left: '0px',
     backgroundColor: '#ff9933',
     opacity: '0.93',
     paddingTop: '8px',
@@ -98,7 +100,7 @@ const styles = {
   },
   tileValue: {
     position: 'absolute',
-    top: '1px',
+    top: '0px',
     right: '3px',
     fontSize: '10px',
     fontWeight: 'normal',

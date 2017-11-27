@@ -22,9 +22,7 @@ class GameBoard extends React.Component {
     };
   }
 
-  onBoardSpaceClick = (boardSpace) => {
-    console.log('Space clicked');
-    console.log(this.props.selectedTile, boardSpace);
+  handleBoardSpaceClick = (boardSpace) => {
     if (this.props.selectedTile && !boardSpace.tile) {
       console.log('Dropping tile...');
       this.props.onDropTile(this.props.selectedTile, boardSpace.location);
@@ -38,9 +36,8 @@ class GameBoard extends React.Component {
       for (let c=0; c<15; c++) {
         spaces.push(
           <BoardSpace
-            location={[r,c]}
-            data={this.props.board[r][c]}
-            onClick={this.onBoardSpaceClick}
+            {...this.props.board[r][c]}
+            onClick={ () => this.handleBoardSpaceClick(this.props.board[r][c]) }
           />
         );
       }

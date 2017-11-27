@@ -10,7 +10,8 @@ type Props = {
   tiles: Array,
   players: Array,
   turn: string,
-  onTilePick: (Object, number) => void
+  onTilePick: (Object, number) => void,
+  onRefreshHand: (string) => void
 };
 
 class Scrabble extends React.Component {
@@ -32,10 +33,12 @@ class Scrabble extends React.Component {
           <Hand
             {...this.props.players['p1']}
             onTilePick={this.props.onTilePick}
+            onRefreshHand={ () => this.props.onRefreshHand('p1') }
           />
           <Hand
             {...this.props.players['p2']}
             onTilePick={this.props.onTilePick}
+            onRefreshHand={ () => this.props.onRefreshHand('p2') }
           />
         </div>
       </div>
@@ -65,7 +68,8 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    onTilePick: (tile, idx) => dispatch(ScrabbleActions.onTilePick(tile, idx))
+    onTilePick: (tile, idx) => dispatch(ScrabbleActions.onTilePick(tile, idx)),
+    onRefreshHand: (player) => dispatch(ScrabbleActions.onRefreshHand(player))
   };
 };
 

@@ -16,12 +16,6 @@ class Tile extends React.Component {
     };
   }
 
-  handleTileClick = () => {
-    if (!this.props.onBoard) {
-      this.props.onClick();
-    }
-  }
-
   render() {
     return (
       <div
@@ -30,7 +24,7 @@ class Tile extends React.Component {
           ...styles.tile,
           ...(this.props.onBoard ? styles.onBoard : {})
         }}
-        onClick={this.handleTileClick}
+        onClick={this.props.onClick}
       >
         {this.props.letter}
         <div style={styles.tileValue}>
@@ -61,7 +55,7 @@ const styles = {
   },
   tileValue: {
     position: 'absolute',
-    top: '1px',
+    top: '0px',
     right: '3px',
     fontSize: '10px',
     fontWeight: 'normal',

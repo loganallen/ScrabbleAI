@@ -8,6 +8,11 @@ const onTilePick = (tile, index) => ({
   }
 });
 
+const onRefreshHand = (playerId) => ({
+  type: ScrabbleActionTypes.ON_REFRESH_HAND,
+  playerId: playerId
+});
+
 const onDropTile = (tile, location) => ({
   type: ScrabbleActionTypes.ON_DROP_TILE,
   data: {
@@ -17,12 +22,8 @@ const onDropTile = (tile, location) => ({
   }
 });
 
-const onBoardSpaceClick = (location, tile) => (dispatch, getState) => {
-  const state = getState();
-  console.log('Board space click', state);
-};
-
 export default {
   onDropTile,
-  onTilePick
+  onTilePick,
+  onRefreshHand
 };

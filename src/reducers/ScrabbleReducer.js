@@ -42,14 +42,24 @@ const initialState = {
 
 const scrabbleReducer = (state = initialState, action) => {
   switch (action.type) {
-  case ScrabbleActionTypes.ON_DROP_TILE:
-    console.log('heeere', action);
-    const players = Object.assign({}, state.players);
+  case ScrabbleActionTypes.ON_DROP_TILE: {
+    let players = Object.assign({}, state.players);
     players[state.turn].hand[action.data.handIndex].onBoard = true;
     return {
       ...state,
       players: players
     };
+  }
+  case ScrabbleActionTypes.ON_REFRESH_HAND: {
+    let players = Object.assign({}, state.players);
+    players[action.playerId].hand.forEach(tile => {
+      tile.onBoard = false;
+    });
+    return {
+      ...state,
+      players: players
+    };
+  }
   default:
     return state;
   }

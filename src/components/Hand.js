@@ -11,25 +11,26 @@ import Tile from './Tile';
 type Props = {
   hand: Array,
   score: number,
-  onTilePick: (Object, number) => void
+  onTilePick: (Object, number) => void,
+  onRefreshHand: () => void
 }
 
 class Hand extends React.Component {
   constructor(props: Props) {
     super(props);
     this.state = {
-      hand: props.hand
+
     };
   }
 
   handleTileClick = (tile, idx) => {
-    console.log('Clicked', tile);
-    this.props.onTilePick(tile, idx);
+    if (!tile.onBoard) {
+      this.props.onTilePick(tile, idx);
+    }
   }
 
-  onRefreshHand = () => {
-    console.log('Refresh hand');
-
+  onShuffleHand = () => {
+    // TODO: Shuffle tiles in hand
   }
 
   _hand(): Array {
@@ -44,13 +45,16 @@ class Hand extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Segment>
         {this._hand()}
+        {/* <Button
+          icon='random'
+          onClick={this.onShuffleHand}
+        /> */}
         <Button
           icon='undo'
-          onClick={this.onRefreshHand}
+          onClick={this.props.onRefreshHand}
         />
       </Segment>
     );
