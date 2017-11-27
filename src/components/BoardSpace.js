@@ -61,37 +61,39 @@ const styles = {
     cursor: 'pointer'
   },
   noBonus: {
-    color: 'gray'
+    color: '#cccccc'
   },
   DOUBLE_WORD: {
-    backgroundColor: 'red'
+    backgroundColor: '#990000'
   },
   TRIPLE_WORD: {
-    backgroundColor: 'orange'
+    backgroundColor: '#ffad33'
   },
   DOUBLE_LETTER: {
-    backgroundColor: 'blue'
+    backgroundColor: '#0073e6'
   },
   TRIPLE_LETTER: {
-    backgroundColor: 'green'
+    backgroundColor: '#39ac39'
   },
   START: {
-    backgroundColor: 'yellow'
+    backgroundColor: '#4d0026'
   },
   DEFAULT: {
-    backgroundColor: 'gray',
+    backgroundColor: '#cccccc',
   },
   tile: {
     position: 'absolute',
     top: '0',
     left: '0',
-    backgroundColor: 'orange',
+    backgroundColor: '#ff9933',
+    opacity: '0.93',
     paddingTop: '8px',
     width: '100%',
     height: '100%',
     borderRadius: '4px',
     textAlign: 'center',
     color: 'black',
+    fontWeight: 'bold',
     display: 'inline-block'
   },
   tileValue: {
@@ -99,6 +101,7 @@ const styles = {
     top: '1px',
     right: '3px',
     fontSize: '10px',
+    fontWeight: 'normal',
     color: 'black'
   }
 };

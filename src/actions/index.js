@@ -1,7 +1,6 @@
 import ScrabbleActionTypes from './ActionTypes';
 
 const onTilePick = (tile, index) => ({
-  // TODO
   type: ScrabbleActionTypes.ON_TILE_PICK,
   data: {
     tile,
@@ -12,8 +11,9 @@ const onTilePick = (tile, index) => ({
 const onDropTile = (tile, location) => ({
   type: ScrabbleActionTypes.ON_DROP_TILE,
   data: {
-    tile,
-    location
+    tile: tile.tile,
+    handIndex: tile.handIndex,
+    location: location
   }
 });
 

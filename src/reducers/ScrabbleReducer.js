@@ -10,7 +10,8 @@ const initiateScrabbleState = () => {
       for (let i=0; i<letter[1]; i++) {
         tiles.push({
           letter: letter[0],
-          value: Number(value)
+          value: Number(value),
+          onBoard: false
         });
       }
     });
@@ -41,8 +42,16 @@ const initialState = {
 
 const scrabbleReducer = (state = initialState, action) => {
   switch (action.type) {
-    default:
-      return state;
+  case ScrabbleActionTypes.ON_DROP_TILE:
+    console.log('heeere', action);
+    const players = Object.assign({}, state.players);
+    players[state.turn].hand[action.data.handIndex].onBoard = true;
+    return {
+      ...state,
+      players: players
+    };
+  default:
+    return state;
   }
 };
 

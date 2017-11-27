@@ -14,8 +14,7 @@ const initiateGameBoard = () => {
       board[x][y] = {
         location: [x,y],
         type: key,
-        tile: null,
-        isSet: false
+        tile: null
       };
     });
   });
@@ -25,8 +24,7 @@ const initiateGameBoard = () => {
       board[r][c] = {
         location: [r,c],
         type: 'DEFAULT',
-        tile: null,
-        isSet: false
+        tile: null
       };
     }
   }
@@ -40,24 +38,27 @@ const initialState = {
 
 const boardReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ScrabbleActionTypes.ON_TILE_PICK:
-      console.log('Tile picked', action);
-      return {
-        ...state,
-        selectedTile: action.data.tile
-      };
-    case ScrabbleActionTypes.ON_DROP_TILE:
-      console.log('Dropped tile...', action);
-      let [x,y] = action.data.location;
-      let updatedBoard = Object.assign({}, state.board);
-      updatedBoard[x][y].tile = action.data.tile;
-      return {
-        ...state,
-        board: updatedBoard,
-        selectedTile: null
-      };
-    default:
-      return state;
+  case ScrabbleActionTypes.ON_TILE_PICK:
+    console.log('Tile picked', action);
+    return {
+      ...state,
+      selectedTile: {
+        tile: action.data.tile,
+        handIndex: action.data.index
+      }
+    };
+  case ScrabbleActionTypes.ON_DROP_TILE:
+    console.log('Dropped tile...', action);
+    let [x,y] = action.data.location;
+    let updatedBoard = Object.assign({}, state.board);
+    updatedBoard[x][y].tile = action.data.tile;
+    return {
+      ...state,
+      board: updatedBoard,
+      selectedTile: null
+    };
+  default:
+    return state;
   }
 };
 

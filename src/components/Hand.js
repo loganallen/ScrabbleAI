@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Segment
+  Segment,
+  Button
 } from 'semantic-ui-react';
 
 import ScrabbleActions from '../actions';
@@ -26,12 +27,16 @@ class Hand extends React.Component {
     this.props.onTilePick(tile, idx);
   }
 
+  onRefreshHand = () => {
+    console.log('Refresh hand');
+
+  }
+
   _hand(): Array {
     const tiles = this.props.hand.map((tile, idx) => (
       <Tile
         key={idx}
-        letter={tile.letter}
-        value={tile.value}
+        {...tile}
         onClick={ () => this.handleTileClick(tile, idx) }
       />
     ));
@@ -43,6 +48,10 @@ class Hand extends React.Component {
     return (
       <Segment>
         {this._hand()}
+        <Button
+          icon='undo'
+          onClick={this.onRefreshHand}
+        />
       </Segment>
     );
   }
