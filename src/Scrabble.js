@@ -2,13 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Header } from 'semantic-ui-react';
 
+import ScrabbleActions from './actions';
 import GameBoard from './components/GameBoard';
 import Hand from './components/Hand';
 
 type Props = {
   tiles: Array,
   players: Array,
-  turn: string
+  turn: string,
+  onTilePick: (Object, number) => void
 };
 
 class Scrabble extends React.Component {

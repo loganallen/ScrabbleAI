@@ -23,7 +23,7 @@ class Hand extends React.Component {
 
   handleTileClick = (tile, idx) => {
     console.log('Clicked', tile);
-    this.props.onTilePick(tile);
+    this.props.onTilePick(tile, idx);
   }
 
   _hand(): Array {

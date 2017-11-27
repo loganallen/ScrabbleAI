@@ -40,9 +40,22 @@ const initialState = {
 
 const boardReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ScrabbleActionTypes.ON_TILE_PICK:
+      console.log('Tile picked', action);
+      return {
+        ...state,
+        selectedTile: action.data.tile
+      };
     case ScrabbleActionTypes.ON_DROP_TILE:
-      console.log('Drop tile...', action);
-      return state;
+      console.log('Dropped tile...', action);
+      let [x,y] = action.data.location;
+      let updatedBoard = Object.assign({}, state.board);
+      updatedBoard[x][y].tile = action.data.tile;
+      return {
+        ...state,
+        board: updatedBoard,
+        selectedTile: null
+      };
     default:
       return state;
   }

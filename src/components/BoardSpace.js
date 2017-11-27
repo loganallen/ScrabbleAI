@@ -33,6 +33,14 @@ class BoardSpace extends React.Component {
         onClick={ () => this.props.onClick(this.props.data) }
       >
         <p style={bonus === '__' ? styles.noBonus : {}}>{bonus}</p>
+        {this.props.data.tile && (
+          <div style={styles.tile}>
+            {this.props.data.tile.letter}
+            <div style={styles.tileValue}>
+              {this.props.data.tile.value}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -40,6 +48,7 @@ class BoardSpace extends React.Component {
 
 const styles = {
   space: {
+    position: 'relative',
     backgroundColor: 'red',
     margin: '1px',
     paddingTop: '8px',
@@ -71,6 +80,26 @@ const styles = {
   },
   DEFAULT: {
     backgroundColor: 'gray',
+  },
+  tile: {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    backgroundColor: 'orange',
+    paddingTop: '8px',
+    width: '100%',
+    height: '100%',
+    borderRadius: '4px',
+    textAlign: 'center',
+    color: 'black',
+    display: 'inline-block'
+  },
+  tileValue: {
+    position: 'absolute',
+    top: '1px',
+    right: '3px',
+    fontSize: '10px',
+    color: 'black'
   }
 };
 
