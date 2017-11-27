@@ -1,5 +1,6 @@
 import ScrabbleActionTypes from '../actions/ActionTypes';
 import { boardSpaceMap } from '../models';
+import { BoardSpaceTypes } from '../models'
 
 const initiateGameBoard = () => {
   let board = [];
@@ -24,7 +25,7 @@ const initiateGameBoard = () => {
       if (board[r][c]) continue;
       board[r][c] = {
         location: [r,c],
-        type: 'DEFAULT',
+        type: BoardSpaceTypes.DEFAULT,
         tile: null,
         isSet: false
       };

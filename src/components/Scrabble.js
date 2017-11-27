@@ -2,16 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Header } from 'semantic-ui-react';
 
-import ScrabbleActions from './actions';
-import GameBoard from './components/GameBoard';
-import Hand from './components/Hand';
+import ScrabbleActions from '../actions';
+import GameBoard from './GameBoard';
+import Hand from './Hand';
 
 type Props = {
   tiles: Array,
   players: Array,
   turn: string,
   onTilePick: (Object, number) => void,
-  onRefreshHand: (string) => void
+  onRefreshHand: (string) => void,
+  onPlayWord: () => void
 };
 
 class Scrabble extends React.Component {
@@ -34,6 +35,7 @@ class Scrabble extends React.Component {
             {...this.props.players['p1']}
             onTilePick={this.props.onTilePick}
             onRefreshHand={ () => this.props.onRefreshHand('p1') }
+            onPlayWord={this.props.onPlayWord}
           />
           <Hand
             {...this.props.players['p2']}
@@ -62,14 +64,15 @@ const styles = {
 const mapState = (state) => {
   console.log('Global state', state);
   return {
-    ...state.scrabble
+    ...state.scrabbleState
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
     onTilePick: (tile, idx) => dispatch(ScrabbleActions.onTilePick(tile, idx)),
-    onRefreshHand: (player) => dispatch(ScrabbleActions.onRefreshHand(player))
+    onRefreshHand: (player) => dispatch(ScrabbleActions.onRefreshHand(player)),
+    onPlayWord: () => dispatch(ScrabbleActions.onPlayWord())
   };
 };
 

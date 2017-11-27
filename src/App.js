@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './assets/logo.svg';
 import './css/App.css';
 
-import Scrabble from './Scrabble';
+import Scrabble from './components/Scrabble';
 
 class App extends Component {
   render() {

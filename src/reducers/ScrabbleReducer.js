@@ -32,7 +32,8 @@ const initiateScrabbleState = () => {
   return {
     tiles,
     players,
-    turn: 'p1'
+    turn: 'p1',
+    firstTurn: true
   };
 }
 

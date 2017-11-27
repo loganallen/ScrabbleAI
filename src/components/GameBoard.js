@@ -67,9 +67,9 @@ const styles = {
   }
 };
 
-const mapState = (store) => {
+const mapState = (state) => {
   return {
-    ...store.board
+    ...state.boardState
   };
 };
 

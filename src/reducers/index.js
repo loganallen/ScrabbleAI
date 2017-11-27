@@ -3,8 +3,8 @@ import scrabbleReducer from './ScrabbleReducer';
 import boardReducer from './BoardReducer';
 
 const reducer = combineReducers({
-  scrabble: scrabbleReducer,
-  board: boardReducer
+  scrabbleState: scrabbleReducer,
+  boardState: boardReducer
 });
 
 export default reducer;

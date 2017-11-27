@@ -12,7 +12,8 @@ type Props = {
   hand: Array,
   score: number,
   onTilePick: (Object, number) => void,
-  onRefreshHand: () => void
+  onRefreshHand: () => void,
+  onPlayWord: () => void
 }
 
 class Hand extends React.Component {
@@ -31,6 +32,15 @@ class Hand extends React.Component {
 
   onShuffleHand = () => {
     // TODO: Shuffle tiles in hand
+  }
+
+  handlePlayClick = () => {
+    let tilesOnBoard = this.props.hand.reduce((acc, el) =>
+      acc || el.onBoard
+    , false);
+    if (tilesOnBoard) {
+      this.props.onPlayWord();
+    }
   }
 
   _hand(): Array {
@@ -55,6 +65,10 @@ class Hand extends React.Component {
         <Button
           icon='undo'
           onClick={this.props.onRefreshHand}
+        />
+        <Button
+          content='Play'
+          onClick={this.handlePlayClick}
         />
       </Segment>
     );

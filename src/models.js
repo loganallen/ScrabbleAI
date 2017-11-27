@@ -1,48 +1,15 @@
-/*
-type Tile = {
-  letter: string,
-  value: number,
-  location: {
-    x: number,
-    y: number
-  },
-  isSet: boolean
-};
-*/
+import keyMirror from 'keymirror';
 
-export type BoardSpaceType = 'START' | 'DEFAULT' | 'DOUBLE_WORD' | 'TRIPLE_WORD'
- | 'DOUBLE_LETTER' | 'TRIPLE_LETTER';
+export const BoardSpaceTypes = keyMirror({
+  'START': null,
+  'DEFAULT': null,
+  'DOUBLE_WORD': null,
+  'TRIPLE_WORD': null,
+  'DOUBLE_LETTER': null,
+  'TRIPLE_LETTER': null
+});
 
-/*
-type BoardSpace = {
-  location: {
-    x: number,
-    y: number
-  },
-  tile?: Tile,
-  bonus: BoardSpaceType
-};
-
-type Board = {
-  spaces: Array<Array<BoardSpace>>,
-  tiles: Array<Tile>
-};
-
-type Player = {
-  id: number,
-  name: string,
-  hand: Array<Tile>,
-  points: number
-};
-
-type Game = {
-  board: Board,
-  players: Array<Player>,
-  turn: number,
-  gameOver: boolean
-};
-*/
-
+// TODO: Rearrange to match Scrabble board not WWF
 export const boardSpaceMap = {
   'START':         ['8,8'],
   'DOUBLE_WORD':   ['2,6','2,10','4,8','6,2','6,14','8,4','8,12','10,2','10,14',
@@ -55,6 +22,7 @@ export const boardSpaceMap = {
                     '9,15','10,6','10,10','12,4','12,12','15,7','15,9']
 };
 
+// TODO: Add 2 blank tiles
 export const scrabbleLetters = {
   1: [['E',12], ['A',9], ['I',9], ['O',8], ['N',6], ['R',6], ['T',6], ['L',4], ['S',4], ['U',4]],
   2: [['D',4], ['G',3]],
