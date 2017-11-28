@@ -1,11 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import {
   Segment,
   Button
 } from 'semantic-ui-react';
 
-import ScrabbleActions from '../actions';
 import Tile from './Tile';
 
 type Props = {

@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Grid,
-  Button
+  Grid
 } from 'semantic-ui-react';
 import ScrabbleActions from '../actions';
 
