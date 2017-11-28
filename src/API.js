@@ -19,6 +19,7 @@ Tile: {
 const _getRowsAndColumns = (board) => {
   let rows = new Set();
   let cols = new Set();
+
   board.forEach((row, r) => {
     row.forEach((space, c) => {
       if (space.tile && !space.isSet) {
@@ -28,20 +29,46 @@ const _getRowsAndColumns = (board) => {
     });
   });
 
-  rows = [...rows].sort();
-  cols = [...cols].sort();
-  return [rows, cols];
+  return [
+    [...rows].sort(),
+    [...cols].sort()
+  ];
 }
 
+const _isAdjacentToSetTile = (board, r, c) => {
+  let valid = false;
+  if (r > 0) { valid = valid || board[r-1][c].isSet; }
+  if (r < 14) { valid = valid || board[r+1][c].isSet; }
+  if (c > 0) { valid = valid || board[r][c-1].isSet; }
+  if (c < 14) { valid = valid || board[r][c+1].isSet; }
+
+  return valid;
+}
+
+// Validate tile placement on board
 const validateTilePlacement = (board, firstTurn) => {
   console.log('Validating tile placement...');
-  // Fail if no tile in starting space for the first turn
-  if (firstTurn && !board[7][7].tile) {
-    throw new Error('Word must pass through starting space');
+  let [rows, cols] = _getRowsAndColumns(board);
+
+  if (firstTurn) {
+    // Fail if no tile in starting space for the first turn
+    if (!board[7][7].tile) {
+      throw new Error('Word must pass through starting space');
+    }
+  } else {
+    // Fail if tiles don't touch any set tiles
+    let valid = false;
+    rows.forEach(r => {
+      cols.forEach(c => {
+        valid = valid || _isAdjacentToSetTile(board, r, c);
+      });
+    });
+    if (!valid) {
+      throw new Error('Word must be adjacent to set tiles');
+    }
   }
 
   // Fail if tiles not all in same row or column
-  let [rows, cols] = _getRowsAndColumns(board);
   if (rows.length > 1 && cols.length > 1) {
     throw new Error('Invalid tile placements');
   }
@@ -64,16 +91,8 @@ const validateTilePlacement = (board, firstTurn) => {
   return true;
 }
 
-// Recursively builds horizontal word with points and keeps track of word bonuses
-const _recHorizontalSearch = (board, _r, c, expandLeft) => {
-  // Return if out of bounds
-  if (c < 0 || c > 14) return ['', 0, []];
-
-  // Return if space has no tile
-  let space = board[_r][c];
-  if (!space.tile) return ['', 0, []];
-
-  // Get the proper value of the tile
+// Extract the tile value and bonus for this space
+const _extractTileValueAndBonus = (space) => {
   let value = 0;
   let bonus = [];
   if (space.isSet) {
@@ -89,10 +108,27 @@ const _recHorizontalSearch = (board, _r, c, expandLeft) => {
       case BoardSpaceTypes.DOUBLE_WORD:
       case BoardSpaceTypes.TRIPLE_WORD:
         bonus.push(space.type);
+        value = space.tile.value;
+        break;
       default:
         value = space.tile.value;
     }
   }
+
+  return [value, bonus];
+}
+
+// Recursively builds horizontal word with points and keeps track of word bonuses
+const _recHorizontalSearch = (board, _r, c, expandLeft) => {
+  // Return if out of bounds
+  if (c < 0 || c > 14) return ['', 0, []];
+
+  // Return if space has no tile
+  let space = board[_r][c];
+  if (!space.tile) return ['', 0, []];
+
+  // Get the proper value of the tile
+  let [value, bonus] = _extractTileValueAndBonus(space);
 
   // Recusively expand horizontally
   let word = '';
@@ -136,25 +172,7 @@ const _recVerticalSearch = (board, r, _c, expandUp) => {
   if (!space.tile) return ['', 0, []];
 
   // Get the proper value of the tile
-  let value = 0;
-  let bonus = [];
-  if (space.isSet) {
-    value = space.tile.value;
-  } else {
-    switch (space.type) {
-      case BoardSpaceTypes.DOUBLE_LETTER:
-        value = space.tile.value * 2;
-        break;
-      case BoardSpaceTypes.TRIPLE_LETTER:
-        value = space.tile.value * 3;
-        break;
-      case BoardSpaceTypes.DOUBLE_WORD:
-      case BoardSpaceTypes.TRIPLE_WORD:
-        bonus.push(space.type);
-      default:
-        value = space.tile.value;
-    }
-  }
+  let [value, bonus] = _extractTileValueAndBonus(space);
 
   // Recusively expand horizontally
   let word = '';
@@ -188,24 +206,33 @@ const _verticalSearch = (board, r, _c) => {
   return [word, points];
 };
 
-
+// Validate words on board and generate point totals
 const validateBoardWords = (board) => {
   console.log('Validation board words...');
   let [rows, cols] = _getRowsAndColumns(board);
   let words = [];
-  let totalValue = 0;
+  let totalPoints = 0;
 
   if (rows.length === 1) {
     // One horizontal search
     let [word, points] = _horizontalSearch(board, rows[0], cols[0]);
-    console.log(word, points);
-    // cols.size many vertical searches
+    words.push(word);
+    totalPoints += points;
+
+    // cols.length many vertical searches
+    cols.forEach(c => {
+      // TODO
+    })
   } else {
     // One vertical search
     let [word, points] = _verticalSearch(board, rows[0], cols[0]);
-    console.log(word, points);
-    // rows.size many horizontal searches
+    words.push(word);
+    totalPoints += points;
+
+    // rows.length many horizontal searches
+    // TODO
   }
+  console.log(words, totalPoints);
 };
 
 export default {
