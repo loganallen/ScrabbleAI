@@ -3,7 +3,7 @@ import scrabbleReducer from './ScrabbleReducer';
 import boardReducer from './BoardReducer';
 
 const reducer = combineReducers({
-  scrabbleState: scrabbleReducer,
+  gameState: scrabbleReducer,
   boardState: boardReducer
 });
 

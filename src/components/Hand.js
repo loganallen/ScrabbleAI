@@ -9,6 +9,7 @@ import Tile from './Tile';
 type Props = {
   hand: Array,
   score: number,
+  currentTurn: boolean,
   onTilePick: (Object, number) => void,
   onRefreshHand: () => void,
   onPlayWord: () => void
@@ -23,6 +24,7 @@ class Hand extends React.Component {
   }
 
   handleTileClick = (tile, idx) => {
+    if (!this.props.currentTurn) return;
     if (!tile.onBoard) {
       this.props.onTilePick(tile, idx);
     }
@@ -33,6 +35,7 @@ class Hand extends React.Component {
   }
 
   handlePlayClick = () => {
+    if (!this.props.currentTurn) return;
     let tilesOnBoard = this.props.hand.reduce((acc, el) =>
       acc || el.onBoard
     , false);

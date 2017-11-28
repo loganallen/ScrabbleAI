@@ -7,14 +7,14 @@ const initiateGameBoard = () => {
   for (let i=0; i<15; i++) {
     board[i] = [];
   }
-  Object.keys(boardSpaceMap).forEach(key => {
-    let locs = boardSpaceMap[key];
+  Object.keys(boardSpaceMap).forEach(spaceType => {
+    let locs = boardSpaceMap[spaceType];
     locs.forEach(loc => {
       let spots = loc.split(',');
-      let [x,y] = spots.map(e => e-1);
-      board[x][y] = {
-        location: [x,y],
-        type: key,
+      let [r,c] = spots.map(e => e-1);
+      board[r][c] = {
+        location: [r,c],
+        type: spaceType,
         tile: null,
         isSet: false
       };
@@ -62,13 +62,25 @@ const boardReducer = (state = initialState, action) => {
     };
   }
   case ScrabbleActionTypes.ON_DROP_TILE: {
-    let [x,y] = action.data.location;
+    let [r,c] = action.data.location;
     let board = [...state.board];
-    board[x][y].tile = action.data.tile;
+    board[r][c].tile = action.data.tile;
     return {
       ...state,
       board: board,
       selectedTile: null
+    };
+  }
+  case ScrabbleActionTypes.SET_TILES: {
+    let board = [...state.board];
+    board.forEach(row => {
+      row.forEach(space => {
+        if (space.tile) { space.isSet = true; }
+      });
+    });
+    return {
+      ...state,
+      board: board
     };
   }
   default:

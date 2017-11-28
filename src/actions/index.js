@@ -23,15 +23,32 @@ const onDropTile = (tile, location) => ({
   }
 });
 
+const setTiles = () => ({
+  type: ScrabbleActionTypes.SET_TILES
+});
+
+const executeTurn = (points) => ({
+  type: ScrabbleActionTypes.EXECUTE_TURN,
+  points: points
+});
+
 const onPlayWord = () => (dispatch, getState) => {
   try {
     let state = getState();
     let validTiles = API.validateTilePlacement(
       state.boardState.board,
-      state.scrabbleState.firstTurn
+      state.gameState.firstTurn
     );
     if (validTiles) {
-      var points = API.validateBoardWords(state.boardState.board);
+      let [words, points] = API.generateWordsAndPoints(state.boardState.board);
+      console.log(words + ', points: ' + points);
+
+      let validWords = API.validateWords(words);
+      if (validWords) {
+        // Set words on board, give points to player, replenish player's hand, switch turn
+        dispatch(setTiles());
+        dispatch(executeTurn(points));
+      }
     }
   } catch (e) {
     console.log('ERROR: ' + e.message);

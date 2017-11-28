@@ -2,7 +2,7 @@ import _ from 'underscore';
 import ScrabbleActionTypes from '../actions/ActionTypes';
 import { scrabbleLetters } from '../models';
 
-const initiateScrabbleState = () => {
+const initiategameState = () => {
   let tiles = [];
   Object.keys(scrabbleLetters).forEach(value => {
     const letters = scrabbleLetters[value];
@@ -38,7 +38,7 @@ const initiateScrabbleState = () => {
 }
 
 const initialState = {
-  ...initiateScrabbleState()
+  ...initiategameState()
 };
 
 const scrabbleReducer = (state = initialState, action) => {
@@ -60,6 +60,25 @@ const scrabbleReducer = (state = initialState, action) => {
       ...state,
       players: players
     };
+  }
+  case ScrabbleActionTypes.EXECUTE_TURN: {
+    let tiles = [...state.tiles];
+    let players = Object.assign({}, state.players);
+    let player = players[state.turn];
+    player.score += action.points;
+    player.hand = player.hand.filter(tile => !tile.onBoard);
+    while (player.hand.length < 7) {
+      let tile = tiles.pop();
+      if (!tile) { break; }
+      player.hand.push(tile);
+    }
+    return {
+      ...state,
+      tiles: _.shuffle(tiles),
+      players: players,
+      turn: (state.turn === 'p1' ? 'p2' : 'p1'),
+      firstTurn: false
+    }
   }
   default:
     return state;

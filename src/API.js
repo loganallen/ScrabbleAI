@@ -218,9 +218,9 @@ const _verticalSearch = (board, r, _c) => {
   return [word, points];
 };
 
-// Validate words on board and generate point totals
-const validateBoardWords = (board) => {
-  console.log('Validation board words...');
+// Generate new words on board and the total points
+const generateWordsAndPoints = (board) => {
+  console.log('Generating words and points...');
   let [rows, cols] = _getRowsAndColumns(board);
   let words = [];
   let totalPoints = 0;
@@ -253,11 +253,27 @@ const validateBoardWords = (board) => {
 
   // Filter out one letter words
   words = words.filter(word => word.length > 1);
-  console.log(words, 'Points:', totalPoints);
   return [words, totalPoints];
 };
 
+const _validateWord = (word) => {
+  // TODO: Dictionary lookup depending on word.length
+
+  return true;
+}
+
+// Validate the words played on the board
+const validateWords = (words) => {
+  let valid = true;
+  words.forEach(word => {
+    valid = valid && _validateWord(word);
+  });
+
+  return valid;
+}
+
 export default {
   validateTilePlacement,
-  validateBoardWords
+  generateWordsAndPoints,
+  validateWords
 };

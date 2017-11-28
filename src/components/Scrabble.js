@@ -33,14 +33,17 @@ class Scrabble extends React.Component {
         <div style={styles.playerHands}>
           <Hand
             {...this.props.players['p1']}
+            currentTurn={this.props.turn === 'p1'}
             onTilePick={this.props.onTilePick}
             onRefreshHand={ () => this.props.onRefreshHand('p1') }
             onPlayWord={this.props.onPlayWord}
           />
           <Hand
             {...this.props.players['p2']}
+            currentTurn={this.props.turn === 'p2'}
             onTilePick={this.props.onTilePick}
             onRefreshHand={ () => this.props.onRefreshHand('p2') }
+            onPlayWord={this.props.onPlayWord}
           />
         </div>
       </div>
@@ -55,8 +58,7 @@ const styles = {
   },
   playerHands: {
     margin: '25px',
-    paddingTop: '50px',
-    display: 'inline-block',
+    float: 'right',
     border: '1px solid gray'
   }
 }
@@ -64,7 +66,7 @@ const styles = {
 const mapState = (state) => {
   console.log('Global state', state);
   return {
-    ...state.scrabbleState
+    ...state.gameState
   };
 };
 
