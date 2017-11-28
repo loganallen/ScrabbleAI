@@ -54,9 +54,11 @@ const validateTilePlacement = (board, firstTurn) => {
     // Fail if no tile in starting space for the first turn
     if (!board[7][7].tile) {
       throw new Error('Word must pass through starting space');
+    } else if (rows.length === 1 && cols.length === 1) {
+      throw new Error('Word must be longer than 1 letter');
     }
   } else {
-    // Fail if tiles don't touch any set tiles
+    // Fail if tiles don't touch any already set tiles
     let valid = false;
     rows.forEach(r => {
       cols.forEach(c => {
@@ -153,7 +155,12 @@ const _horizontalSearch = (board, _r, c) => {
   let [rWord, rVal, rBonus] = _recHorizontalSearch(board, _r, c+1, false);
 
   let word = lWord + rWord;
-  let points = lVal + rVal;
+  let points = 0;
+  // One letter words don't count
+  if (word.length > 1) {
+    points = lVal + rVal;
+  }
+
   lBonus.concat(rBonus).forEach(bonus => {
     if (bonus === BoardSpaceTypes.DOUBLE_WORD) { points *= 2; }
     else if (bonus === BoardSpaceTypes.TRIPLE_WORD) { points *= 3; }
@@ -197,7 +204,12 @@ const _verticalSearch = (board, r, _c) => {
   let [bWord, bVal, bBonus] = _recVerticalSearch(board, r+1, _c, false);
 
   let word = tWord + bWord;
-  let points = tVal + bVal;
+  let points = 0;
+  // One letter words don't count
+  if (word.length > 1) {
+    points = tVal + bVal;
+  }
+
   tBonus.concat(bBonus).forEach(bonus => {
     if (bonus === BoardSpaceTypes.DOUBLE_WORD) { points *= 2; }
     else if (bonus === BoardSpaceTypes.TRIPLE_WORD) { points *= 3; }
@@ -221,8 +233,10 @@ const validateBoardWords = (board) => {
 
     // cols.length many vertical searches
     cols.forEach(c => {
-      // TODO
-    })
+      let [word, points] = _verticalSearch(board, rows[0], c);
+      words.push(word);
+      totalPoints += points;
+    });
   } else {
     // One vertical search
     let [word, points] = _verticalSearch(board, rows[0], cols[0]);
@@ -230,9 +244,17 @@ const validateBoardWords = (board) => {
     totalPoints += points;
 
     // rows.length many horizontal searches
-    // TODO
+    rows.forEach(r => {
+      let [word, points] = _horizontalSearch(board, r, cols[0]);
+      words.push(word);
+      totalPoints += points;
+    });
   }
-  console.log(words, totalPoints);
+
+  // Filter out one letter words
+  words = words.filter(word => word.length > 1);
+  console.log(words, 'Points:', totalPoints);
+  return [words, totalPoints];
 };
 
 export default {
