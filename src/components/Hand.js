@@ -1,12 +1,14 @@
 import React from 'react';
 import {
   Segment,
-  Button
+  Button,
+  Header
 } from 'semantic-ui-react';
 
 import Tile from './Tile';
 
 type Props = {
+  playerName: string,
   hand: Array,
   score: number,
   currentTurn: boolean,
@@ -58,6 +60,9 @@ class Hand extends React.Component {
   render() {
     return (
       <Segment>
+        <Header size='small'>
+          {`${this.props.playerName} | Points: ${this.props.score}`}
+        </Header>
         {this._hand()}
         {/* <Button
           icon='random'

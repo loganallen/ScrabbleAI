@@ -32,6 +32,7 @@ class Scrabble extends React.Component {
         </div>
         <div style={styles.playerHands}>
           <Hand
+            playerName='p1'
             {...this.props.players['p1']}
             currentTurn={this.props.turn === 'p1'}
             onTilePick={this.props.onTilePick}
@@ -39,6 +40,7 @@ class Scrabble extends React.Component {
             onPlayWord={this.props.onPlayWord}
           />
           <Hand
+            playerName='p2'
             {...this.props.players['p2']}
             currentTurn={this.props.turn === 'p2'}
             onTilePick={this.props.onTilePick}
