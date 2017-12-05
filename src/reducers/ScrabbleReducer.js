@@ -43,9 +43,9 @@ const initialState = {
 
 const scrabbleReducer = (state = initialState, action) => {
   switch (action.type) {
-  case ScrabbleActionTypes.ON_DROP_TILE: {
+  case ScrabbleActionTypes.REMOVE_TILE_FROM_HAND: {
     let players = Object.assign({}, state.players);
-    players[state.turn].hand[action.data.handIndex].onBoard = true;
+    players[state.turn].hand[action.index].onBoard = true;
     return {
       ...state,
       players: players
@@ -67,9 +67,8 @@ const scrabbleReducer = (state = initialState, action) => {
     let player = players[state.turn];
     player.score += action.points;
     player.hand = player.hand.filter(tile => !tile.onBoard);
-    while (player.hand.length < 7) {
+    while (player.hand.length < 7 && tiles.length > 1) {
       let tile = tiles.pop();
-      if (!tile) { break; }
       player.hand.push(tile);
     }
     return {

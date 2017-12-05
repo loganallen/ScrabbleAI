@@ -61,13 +61,10 @@ const boardReducer = (state = initialState, action) => {
       board: board
     };
   }
-  case ScrabbleActionTypes.ON_DROP_TILE: {
-    let [r,c] = action.data.location;
-    let board = [...state.board];
-    board[r][c].tile = action.data.tile;
+  case ScrabbleActionTypes.UPDATE_BOARD: {
     return {
       ...state,
-      board: board,
+      board: action.board,
       selectedTile: null
     };
   }

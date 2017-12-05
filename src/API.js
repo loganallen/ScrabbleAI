@@ -256,24 +256,7 @@ const generateWordsAndPoints = (board) => {
   return [words, totalPoints];
 };
 
-const _validateWord = (word) => {
-  // TODO: Dictionary lookup depending on word.length
-
-  return true;
-}
-
-// Validate the words played on the board
-const validateWords = (words) => {
-  let valid = true;
-  words.forEach(word => {
-    valid = valid && _validateWord(word);
-  });
-
-  return valid;
-}
-
 export default {
   validateTilePlacement,
-  generateWordsAndPoints,
-  validateWords
+  generateWordsAndPoints
 };
