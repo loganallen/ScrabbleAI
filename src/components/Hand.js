@@ -64,7 +64,7 @@ class Hand extends React.Component {
 
   render() {
     return (
-      <Segment>
+      <Segment raised>
         <Header size='small'>
           {`${this.props.playerName} | Points: ${this.props.score}`}
         </Header>

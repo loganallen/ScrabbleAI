@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Grid
+  Grid,
+  Segment
 } from 'semantic-ui-react';
 import ScrabbleActions from '../actions';
 
@@ -52,17 +53,19 @@ class GameBoard extends React.Component {
 
   render() {
     return (
-      <div style={styles.board}>
-        {this._gameBoard()}
-      </div>
+      <Segment raised>
+        <div style={styles.board}>
+          {this._gameBoard()}
+        </div>
+      </Segment>
     );
   }
 }
 
 const styles = {
   board: {
-    padding: '25px',
-    width: '575px'
+    padding: '25px 20px',
+    width: '570px'
   }
 };
 

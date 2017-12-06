@@ -66,7 +66,6 @@ const scrabbleReducer = (state = initialState, action) => {
     let players = Object.assign({}, state.players);
     let player = players[state.turn];
     player.score += action.points;
-    console.log(action.hand);
     player.hand = (action.hand ? action.hand : player.hand);
     player.hand = player.hand.filter(tile => !tile.onBoard);
     while (player.hand.length < 7 && tiles.length > 1) {

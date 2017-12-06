@@ -57,12 +57,11 @@ class Scrabble extends React.Component {
 const styles = {
   gameBoard: {
     display: 'inline-block',
-    border: '1px solid gray'
+    margin: '25px'
   },
   playerHands: {
     margin: '25px',
-    float: 'right',
-    border: '1px solid gray'
+    float: 'right'
   }
 }
 
