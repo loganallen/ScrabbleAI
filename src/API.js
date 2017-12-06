@@ -1,21 +1,6 @@
 // API calls
 import { BoardSpaceTypes } from './models';
 
-/*
-board[r][c] : {
-  location: [r,c],
-  type: boardSpaceType,
-  tile: Tile,
-  isSet: boolean
-};
-
-Tile: {
-  letter: string,
-  value: number,
-  onBoard: boolean
-}
-*/
-
 const _getRowsAndColumns = (board) => {
   let rows = new Set();
   let cols = new Set();

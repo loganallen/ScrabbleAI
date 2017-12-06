@@ -12,7 +12,8 @@ type Props = {
   turn: string,
   onTilePick: (Object, number) => void,
   onRefreshHand: (string) => void,
-  onPlayWord: () => void
+  onPlayWord: () => void,
+  onPlayBot: (Array) => void
 };
 
 class Scrabble extends React.Component {
@@ -40,12 +41,12 @@ class Scrabble extends React.Component {
             onPlayWord={this.props.onPlayWord}
           />
           <Hand
-            playerName='p2'
-            {...this.props.players['p2']}
-            currentTurn={this.props.turn === 'p2'}
+            playerName='bot'
+            {...this.props.players['bot']}
+            currentTurn={this.props.turn === 'bot'}
             onTilePick={this.props.onTilePick}
-            onRefreshHand={ () => this.props.onRefreshHand('p2') }
-            onPlayWord={this.props.onPlayWord}
+            onRefreshHand={ () => this.props.onRefreshHand('bot') }
+            onPlayBot={this.props.onPlayBot}
           />
         </div>
       </div>
@@ -76,7 +77,8 @@ const mapDispatch = (dispatch) => {
   return {
     onTilePick: (tile, idx) => dispatch(ScrabbleActions.onTilePick(tile, idx)),
     onRefreshHand: (player) => dispatch(ScrabbleActions.onRefreshHand(player)),
-    onPlayWord: () => dispatch(ScrabbleActions.onPlayWord())
+    onPlayWord: () => dispatch(ScrabbleActions.onPlayWord()),
+    onPlayBot: (hand) => dispatch(ScrabbleActions.findBestWord(hand))
   };
 };
 

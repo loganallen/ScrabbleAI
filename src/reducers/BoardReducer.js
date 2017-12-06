@@ -69,7 +69,7 @@ const boardReducer = (state = initialState, action) => {
     };
   }
   case ScrabbleActionTypes.SET_TILES: {
-    let board = [...state.board];
+    let board = action.board;
     board.forEach(row => {
       row.forEach(space => {
         if (space.tile) { space.isSet = true; }

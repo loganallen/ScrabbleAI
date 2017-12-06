@@ -14,7 +14,8 @@ type Props = {
   currentTurn: boolean,
   onTilePick: (Object, number) => void,
   onRefreshHand: () => void,
-  onPlayWord: () => void
+  onPlayWord: () => void,
+  onPlayBot?: () => void
 }
 
 class Hand extends React.Component {
@@ -38,11 +39,15 @@ class Hand extends React.Component {
 
   handlePlayClick = () => {
     if (!this.props.currentTurn) return;
-    let tilesOnBoard = this.props.hand.reduce((acc, el) =>
-      acc || el.onBoard
-    , false);
-    if (tilesOnBoard) {
-      this.props.onPlayWord();
+    if (this.props.playerName === 'bot') {
+      this.props.onPlayBot(this.props.hand);
+    } else {
+      let tilesOnBoard = this.props.hand.reduce((acc, el) =>
+        acc || el.onBoard
+      , false);
+      if (tilesOnBoard) {
+        this.props.onPlayWord();
+      }
     }
   }
 

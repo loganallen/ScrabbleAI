@@ -22,11 +22,11 @@ const initiategameState = () => {
 
   let players = {
     'p1': { hand: [], score: 0 },
-    'p2': { hand: [], score: 0 }
+    'bot': { hand: [], score: 0 }
   };
   for (let i=0; i<7; i++) {
     players['p1'].hand.push(tiles.pop());
-    players['p2'].hand.push(tiles.pop());
+    players['bot'].hand.push(tiles.pop());
   }
 
   return {
@@ -66,6 +66,8 @@ const scrabbleReducer = (state = initialState, action) => {
     let players = Object.assign({}, state.players);
     let player = players[state.turn];
     player.score += action.points;
+    console.log(action.hand);
+    player.hand = (action.hand ? action.hand : player.hand);
     player.hand = player.hand.filter(tile => !tile.onBoard);
     while (player.hand.length < 7 && tiles.length > 1) {
       let tile = tiles.pop();
@@ -75,7 +77,7 @@ const scrabbleReducer = (state = initialState, action) => {
       ...state,
       tiles: _.shuffle(tiles),
       players: players,
-      turn: (state.turn === 'p1' ? 'p2' : 'p1'),
+      turn: (state.turn === 'p1' ? 'bot' : 'p1'),
       firstTurn: false
     }
   }
