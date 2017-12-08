@@ -66,7 +66,6 @@ const styles = {
 }
 
 const mapState = (state) => {
-  console.log('Global state', state);
   return {
     ...state.gameState
   };

@@ -9,7 +9,6 @@ export const BoardSpaceTypes = keyMirror({
   'TRIPLE_LETTER': null
 });
 
-// TODO: Rearrange to match Scrabble board not WWF
 export const boardSpaceMap = {
   'START':         ['8,8'],
   'DOUBLE_WORD':   ['2,6','2,10','4,8','6,2','6,14','8,4','8,12','10,2','10,14',
@@ -31,4 +30,8 @@ export const scrabbleLetters = {
   5: [['K',1]],
   8: [['J',1], ['X',1]],
   10: [['Q',1], ['Z',1]]
+};
+
+export const _cloneBoard = (board) => {
+  return board.map(row => row.map(space => ( {...space} )));
 };

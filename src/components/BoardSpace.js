@@ -1,6 +1,6 @@
 import React from 'react';
 import {  } from 'semantic-ui-react';
-import { BoardSpaceTypes } from '../models';
+import { BoardSpaceTypes } from '../utils';
 
 type Props = {
   location: Array,

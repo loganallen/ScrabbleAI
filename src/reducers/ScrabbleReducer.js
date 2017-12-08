@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import ScrabbleActionTypes from '../actions/ActionTypes';
-import { scrabbleLetters } from '../models';
+import { scrabbleLetters } from '../utils';
 
 const initiategameState = () => {
   let tiles = [];

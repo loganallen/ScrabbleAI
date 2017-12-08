@@ -1,6 +1,6 @@
 import ScrabbleActionTypes from '../actions/ActionTypes';
-import { boardSpaceMap } from '../models';
-import { BoardSpaceTypes } from '../models'
+import { boardSpaceMap } from '../utils';
+import { BoardSpaceTypes } from '../utils'
 
 const initiateGameBoard = () => {
   let board = [];
