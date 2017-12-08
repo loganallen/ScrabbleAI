@@ -28,7 +28,6 @@ class BoardSpace extends React.Component {
     const bonus = this.abbreviateSpaceType(this.props.type);
     return (
       <div
-        key={this.props.location.join('_')}
         style={{
           ...styles.space,
           ...styles[this.props.type]

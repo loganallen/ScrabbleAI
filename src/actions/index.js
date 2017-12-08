@@ -2,7 +2,7 @@ import axios from 'axios';
 import ScrabbleActionTypes from './ActionTypes';
 import { _cloneBoard } from '../utils';
 
-const onTilePick = (tile, index) => ({
+const onTilePick = (tile, index?) => ({
   type: ScrabbleActionTypes.ON_TILE_PICK,
   data: {
     tile,
@@ -25,22 +25,28 @@ const removeTileFromHand = (index) => ({
   index: index
 });
 
-const updatePointsForHand = (points) => ({
-  type: ScrabbleActionTypes.UPDATE_HAND_POINTS,
-  points: points
-});
+const onMoveTile = (tile, location) => (dispatch, getState) => {
+  console.log('moving tile', tile, location);
+  let board = _cloneBoard(getState().boardState.board);
+  let [r,c] = location;
+  board[r][c].tile = null;
+  dispatch(updateBoard(board));
+  dispatch(onTilePick(tile));
+};
 
 const onDropTile = (tile, location) => (dispatch, getState) => {
+  console.log('dropping tile', tile, location);
   let board = _cloneBoard(getState().boardState.board);
   let [r,c] = location;
   board[r][c].tile = tile.tile;
   dispatch(updateBoard(board));
-  dispatch(removeTileFromHand(tile.handIndex));
+  if (tile.handIndex != null) {
+    dispatch(removeTileFromHand(tile.handIndex));
+  }
   axios.post('/analyzeBoardConfiguration', {
     board: board
   }).then(res => {
     let [words, points] = [res.data.words, res.data.points];
-    // dispatch(updatePointsForHand(points));
     console.log(words, points);
   }).catch(err => {
     console.log(err);
@@ -121,6 +127,7 @@ const findBestWord = (hand) => (dispatch, getState) => {
 
 export default {
   onDropTile,
+  onMoveTile,
   onTilePick,
   onRefreshHand,
   onPlayWord,

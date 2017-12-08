@@ -11,7 +11,8 @@ import BoardSpace from './BoardSpace';
 type Props = {
   board: Array,
   selectedTile?: Object,
-  onDropTile: (Object, Array) => void
+  onDropTile: (Object, Array) => void,
+  onMoveTile: (Object, Array) => void
 };
 
 class GameBoard extends React.Component {
@@ -23,9 +24,16 @@ class GameBoard extends React.Component {
   }
 
   handleBoardSpaceClick = (boardSpace) => {
-    if (this.props.selectedTile && !boardSpace.tile) {
-      console.log('Dropping tile...');
-      this.props.onDropTile(this.props.selectedTile, boardSpace.location);
+    if (this.props.selectedTile) {
+      if (!boardSpace.tile) {
+        console.log('Dropping tile');
+        this.props.onDropTile(this.props.selectedTile, boardSpace.location);
+      }
+    } else {
+      if (boardSpace.tile && !boardSpace.isSet) {
+        console.log('Moving tile');
+        this.props.onMoveTile(boardSpace.tile, boardSpace.location);
+      }
     }
   }
 
@@ -36,6 +44,7 @@ class GameBoard extends React.Component {
       for (let c=0; c<15; c++) {
         spaces.push(
           <BoardSpace
+            key={[r,c].join('_')}
             {...this.props.board[r][c]}
             onClick={ () => this.handleBoardSpaceClick(this.props.board[r][c]) }
           />
@@ -77,7 +86,8 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    onDropTile: (tile, loc) => dispatch(ScrabbleActions.onDropTile(tile, loc))
+    onDropTile: (tile, loc) => dispatch(ScrabbleActions.onDropTile(tile, loc)),
+    onMoveTile: (tile, loc) => dispatch(ScrabbleActions.onMoveTile(tile, loc))
   };
 };
 
