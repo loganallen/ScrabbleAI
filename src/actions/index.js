@@ -35,7 +35,6 @@ const onMoveTile = (tile, location) => (dispatch, getState) => {
 };
 
 const onDropTile = (tile, location) => (dispatch, getState) => {
-  console.log('dropping tile', tile, location);
   let board = _cloneBoard(getState().boardState.board);
   let [r,c] = location;
   board[r][c].tile = tile.tile;

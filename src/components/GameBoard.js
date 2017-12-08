@@ -26,12 +26,10 @@ class GameBoard extends React.Component {
   handleBoardSpaceClick = (boardSpace) => {
     if (this.props.selectedTile) {
       if (!boardSpace.tile) {
-        console.log('Dropping tile');
         this.props.onDropTile(this.props.selectedTile, boardSpace.location);
       }
     } else {
       if (boardSpace.tile && !boardSpace.isSet) {
-        console.log('Moving tile');
         this.props.onMoveTile(boardSpace.tile, boardSpace.location);
       }
     }

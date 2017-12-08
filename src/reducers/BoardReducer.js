@@ -42,7 +42,6 @@ const initialState = {
 const boardReducer = (state = initialState, action) => {
   switch (action.type) {
   case ScrabbleActionTypes.ON_TILE_PICK:
-    console.log(action.data);
     return {
       ...state,
       selectedTile: {
