@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Header } from 'semantic-ui-react';
+import { Label } from 'semantic-ui-react';
 
 import ScrabbleActions from '../actions';
 import GameBoard from './GameBoard';
@@ -10,6 +10,7 @@ type Props = {
   tiles: Array,
   players: Array,
   turn: string,
+  gameOver: boolean,
   onTilePick: (Object, number) => void,
   onRefreshHand: (string) => void,
   onPlayWord: () => void,
@@ -19,33 +20,37 @@ type Props = {
 class Scrabble extends React.Component {
   constructor(props: Props) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
   }
 
   render() {
     return (
       <div>
-        <Header>Scrabble.ai</Header>
         <div style={styles.gameBoard}>
+          <Label tag>
+            {`${this.props.tiles.length} tiles left`}
+          </Label>
           <GameBoard />
         </div>
         <div style={styles.playerHands}>
           <Hand
-            playerName='p1'
+            playerName='Me'
+            isBot={true}
             {...this.props.players['p1']}
-            currentTurn={this.props.turn === 'p1'}
+            currentTurn={this.props.turn === 'p1' && !this.props.gameOver}
             onTilePick={this.props.onTilePick}
             onRefreshHand={ () => this.props.onRefreshHand('p1') }
             onPlayWord={this.props.onPlayWord}
+            onPlayBot={this.props.onPlayBot}
           />
           <Hand
-            playerName='bot'
-            {...this.props.players['bot']}
-            currentTurn={this.props.turn === 'bot'}
+            playerName='Bot2'
+            isBot={true}
+            {...this.props.players['p2']}
+            currentTurn={this.props.turn === 'p2' && !this.props.gameOver}
             onTilePick={this.props.onTilePick}
-            onRefreshHand={ () => this.props.onRefreshHand('bot') }
+            onRefreshHand={ () => this.props.onRefreshHand('p2') }
+            onPlayWord={this.props.onPlayWord}
             onPlayBot={this.props.onPlayBot}
           />
         </div>

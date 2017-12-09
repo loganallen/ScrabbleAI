@@ -9,6 +9,7 @@ import Tile from './Tile';
 
 type Props = {
   playerName: string,
+  isBot: boolean,
   hand: Array,
   score: number,
   currentTurn: boolean,
@@ -22,7 +23,7 @@ class Hand extends React.Component {
   constructor(props: Props) {
     super(props);
     this.state = {
-
+      isBot: props.isBot
     };
   }
 
@@ -39,12 +40,14 @@ class Hand extends React.Component {
 
   handlePlayClick = () => {
     if (!this.props.currentTurn) return;
-    if (this.props.playerName === 'bot') {
+
+    if (this.state.isBot) {
       this.props.onPlayBot(this.props.hand);
     } else {
-      let tilesOnBoard = this.props.hand.reduce((acc, el) =>
-        acc || el.onBoard
-      , false);
+      let tilesOnBoard = this.props.hand.reduce((acc, el) => {
+        return acc || el.onBoard;
+      }, false);
+      
       if (tilesOnBoard) {
         this.props.onPlayWord();
       }

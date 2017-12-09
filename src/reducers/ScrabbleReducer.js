@@ -22,18 +22,19 @@ const initiategameState = () => {
 
   let players = {
     'p1': { hand: [], score: 0 },
-    'bot': { hand: [], score: 0 }
+    'p2': { hand: [], score: 0 }
   };
   for (let i=0; i<7; i++) {
     players['p1'].hand.push(tiles.pop());
-    players['bot'].hand.push(tiles.pop());
+    players['p2'].hand.push(tiles.pop());
   }
 
   return {
     tiles,
     players,
     turn: 'p1',
-    firstTurn: true
+    firstTurn: true,
+    gameOver: false
   };
 }
 
@@ -65,19 +66,32 @@ const scrabbleReducer = (state = initialState, action) => {
     let tiles = [...state.tiles];
     let players = Object.assign({}, state.players);
     let player = players[state.turn];
+
     player.score += action.points;
     player.hand = (action.hand ? action.hand : player.hand);
     player.hand = player.hand.filter(tile => !tile.onBoard);
-    while (player.hand.length < 7 && tiles.length > 1) {
+
+    while (player.hand.length < 7 && tiles.length > 0) {
       let tile = tiles.pop();
       player.hand.push(tile);
     }
+
+    let opponent = state.turn === 'p1' ? 'p2' : 'p1';
+
+    // Add 2x the points leftover in the opponent's hand
+    if (player.hand.length === 0) {
+      let oppHand = players[opponent].hand;
+      let leftoverPoints = oppHand.reduce((acc, tile) => acc + tile.value, 0);
+      player.score += 2*leftoverPoints;
+    }
+
     return {
       ...state,
       tiles: _.shuffle(tiles),
       players: players,
-      turn: (state.turn === 'p1' ? 'bot' : 'p1'),
-      firstTurn: false
+      turn: opponent,
+      firstTurn: false,
+      gameOver: player.hand.length === 0
     }
   }
   default:

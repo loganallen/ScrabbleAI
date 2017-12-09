@@ -26,7 +26,6 @@ const removeTileFromHand = (index) => ({
 });
 
 const onMoveTile = (tile, location) => (dispatch, getState) => {
-  console.log('moving tile', tile, location);
   let board = _cloneBoard(getState().boardState.board);
   let [r,c] = location;
   board[r][c].tile = null;
@@ -35,15 +34,21 @@ const onMoveTile = (tile, location) => (dispatch, getState) => {
 };
 
 const onDropTile = (tile, location) => (dispatch, getState) => {
-  let board = _cloneBoard(getState().boardState.board);
+  let state = getState();
+  let board = _cloneBoard(state.boardState.board);
+  let hand = state.gameState.players[state.gameState.turn].hand;
+
   let [r,c] = location;
   board[r][c].tile = tile.tile;
   dispatch(updateBoard(board));
+
   if (tile.handIndex != null) {
     dispatch(removeTileFromHand(tile.handIndex));
   }
+
   axios.post('/analyzeBoardConfiguration', {
-    board: board
+    board: board,
+    hand: hand
   }).then(res => {
     let [words, points] = [res.data.words, res.data.points];
     console.log(words, points);
@@ -80,9 +85,10 @@ const _validateWords = (words, points) => (dispatch, getState) => {
   });
 }
 
-const _analyzeBoardConfiguration = (board) => (dispatch, getState) => {
+const _analyzeBoardConfiguration = (board, hand) => (dispatch, getState) => {
   axios.post('/analyzeBoardConfiguration', {
-    board: board
+    board: board,
+    hand: hand
   }).then(res => {
     let [words, points] = [res.data.words, res.data.points];
     dispatch(_validateWords(words, points));
@@ -93,12 +99,14 @@ const _analyzeBoardConfiguration = (board) => (dispatch, getState) => {
 
 const onPlayWord = () => (dispatch, getState) => {
   let state = getState();
+  let board = state.boardState.board;
+  let hand = state.gameState.players[state.gameState.turn].hand;
   axios.post('/validateTilePlacement', {
     board: state.boardState.board,
     firstTurn: state.gameState.firstTurn
   }).then(res => {
     if (res.data.valid) {
-      dispatch(_analyzeBoardConfiguration(state.boardState.board));
+      dispatch(_analyzeBoardConfiguration(board, hand));
     } else {
       console.log(res.data.error);
     }
@@ -112,11 +120,12 @@ const findBestWord = (hand) => (dispatch, getState) => {
   let state = getState();
   axios.post('/findBestWord', {
     board: state.boardState.board,
-    hand: hand
+    hand: hand,
+    firstTurn: state.gameState.firstTurn
   }).then(res => {
     // TODO: Error detection from backend
     // Set words on board, give points to player, replenish player's hand, switch turn
-    console.log(`Bot played [${res.data.words}] for ${res.data.points} points`);
+    console.log(`${state.gameState.turn} played [${res.data.words}] for ${res.data.points} points`);
     dispatch(setTiles(res.data.board));
     dispatch(executeTurn(res.data.points, res.data.hand));
   }).catch(err => {
