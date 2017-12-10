@@ -121,7 +121,8 @@ const findBestWord = (hand) => (dispatch, getState) => {
   axios.post('/findBestWord', {
     board: state.boardState.board,
     hand: hand,
-    firstTurn: state.gameState.firstTurn
+    firstTurn: state.gameState.firstTurn,
+    isGreedy: state.gameState.turn === 'p2'
   }).then(res => {
     // TODO: Error detection from backend
     // Set words on board, give points to player, replenish player's hand, switch turn
