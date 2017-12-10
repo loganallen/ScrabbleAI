@@ -122,7 +122,8 @@ const findBestWord = (hand) => (dispatch, getState) => {
     board: state.boardState.board,
     hand: hand,
     firstTurn: state.gameState.firstTurn,
-    isGreedy: state.gameState.turn === 'p2'
+    isGreedy: false,
+    level: state.gameState.turn === 'p1' ? 'BEGINNER' : 'INTERMEDIATE'
   }).then(res => {
     // TODO: Error detection from backend
     // Set words on board, give points to player, replenish player's hand, switch turn

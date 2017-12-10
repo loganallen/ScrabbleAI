@@ -34,7 +34,7 @@ class Scrabble extends React.Component {
         </div>
         <div style={styles.playerHands}>
           <Hand
-            playerName='Heuristic'
+            playerName='Me'
             isBot={true}
             {...this.props.players['p1']}
             currentTurn={this.props.turn === 'p1' && !this.props.gameOver}
