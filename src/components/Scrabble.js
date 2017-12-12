@@ -35,7 +35,7 @@ class Scrabble extends React.Component {
         <div style={styles.playerHands}>
           <Hand
             playerName='Me'
-            isBot={true}
+            isBot={false}
             {...this.props.players['p1']}
             currentTurn={this.props.turn === 'p1' && !this.props.gameOver}
             onTilePick={this.props.onTilePick}
@@ -44,7 +44,7 @@ class Scrabble extends React.Component {
             onPlayBot={this.props.onPlayBot}
           />
           <Hand
-            playerName='Greedy'
+            playerName='Bot'
             isBot={true}
             {...this.props.players['p2']}
             currentTurn={this.props.turn === 'p2' && !this.props.gameOver}
@@ -68,7 +68,7 @@ const styles = {
     margin: '25px',
     float: 'right'
   }
-}
+};
 
 const mapState = (state) => {
   return {

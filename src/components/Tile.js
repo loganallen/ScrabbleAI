@@ -1,7 +1,8 @@
 import React from 'react';
 
 type Props = {
-  id: number,
+  clickable: boolean,
+  hiddenLabel: boolean,
   letter: string,
   value: number,
   onBoard: boolean,
@@ -19,16 +20,16 @@ class Tile extends React.Component {
   render() {
     return (
       <div
-        key={this.props.id}
         style={{
           ...styles.tile,
+          ...(this.props.clickable ? styles.clickable : {}),
           ...(this.props.onBoard ? styles.onBoard : {})
         }}
         onClick={this.props.onClick}
       >
-        {this.props.letter}
+        {this.props.hiddenLabel ? '?' : this.props.letter}
         <div style={styles.tileValue}>
-          {this.props.value}
+          {this.props.hiddenLabel ? '' : this.props.value}
         </div>
       </div>
     );
@@ -48,6 +49,9 @@ const styles = {
     fontWeight: 'bold',
     display: 'inline-block',
     position: 'relative',
+    cursor: 'default'
+  },
+  clickable: {
     cursor: 'pointer'
   },
   onBoard: {
