@@ -25,6 +25,19 @@ const removeTileFromHand = (index) => ({
   index: index
 });
 
+const updateMessage = (message?) => ({
+  type: ScrabbleActionTypes.UPDATE_MESSAGE,
+  message: message
+});
+
+const displayMessage = (message) => (dispatch, _) => {
+  dispatch(updateMessage(message));
+  // Remove message after 5 seconds
+  // setTimeout(() => {
+  //   dispatch(updateMessage());
+  // }, 5000);
+};
+
 const onMoveTile = (tile, location) => (dispatch, getState) => {
   let board = _cloneBoard(getState().boardState.board);
   let [r,c] = location;
@@ -76,9 +89,22 @@ const _validateWords = (words, points) => (dispatch, getState) => {
       // Set words on board, give points to player, replenish player's hand, switch turn
       dispatch(setTiles(getState().boardState.board));
       dispatch(executeTurn(points));
-      console.log(`You played ${words} for ${points} points`);
+      dispatch(displayMessage({
+        status: 'success',
+        text: `You played ${words} for ${points} points`
+      }));
     } else {
-      console.log('Invalid words', res.data.invalidWords);
+      let invalidWords = res.data.invalidWords.join(', ');
+      let msg = `${invalidWords}`;
+      if (res.data.invalidWords.length > 1) {
+        msg += ' are not valid words';
+      } else {
+        msg += ' is not a valid word';
+      }
+      dispatch(displayMessage({
+        status: 'error',
+        text: msg
+      }));
     }
   }).catch(err => {
     console.log(err);
@@ -108,7 +134,10 @@ const onPlayWord = () => (dispatch, getState) => {
     if (res.data.valid) {
       dispatch(_analyzeBoardConfiguration(board, hand));
     } else {
-      console.log(res.data.error);
+      dispatch(displayMessage({
+        status: 'error',
+        text: res.data.error
+      }));
     }
   }).catch(err => {
     console.log(err);
@@ -126,8 +155,11 @@ const findBestWord = (hand) => (dispatch, getState) => {
     level: 'INTERMEDIATE'
   }).then(res => {
     // TODO: Error detection from backend
-    // Set words on board, give points to player, replenish player's hand, switch turn
-    console.log(`${state.gameState.turn} played [${res.data.words}] for ${res.data.points} points`);
+    let words = res.data.words.join(', ');
+    dispatch(displayMessage({
+      status: 'success',
+      text: `AI bot played ${words} for ${res.data.points} points`
+    }));
     dispatch(setTiles(res.data.board));
     dispatch(executeTurn(res.data.points, res.data.hand));
   }).catch(err => {

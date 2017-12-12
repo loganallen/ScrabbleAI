@@ -34,6 +34,7 @@ const initiategameState = () => {
     players,
     turn: 'p1',
     firstTurn: true,
+    message: null,
     gameOver: false
   };
 }
@@ -94,6 +95,11 @@ const scrabbleReducer = (state = initialState, action) => {
       gameOver: player.hand.length === 0
     }
   }
+  case ScrabbleActionTypes.UPDATE_MESSAGE:
+    return {
+      ...state,
+      message: action.message
+    };
   default:
     return state;
   }

@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Label } from 'semantic-ui-react';
+import {
+  Label,
+  Message
+} from 'semantic-ui-react';
 
 import ScrabbleActions from '../actions';
 import GameBoard from './GameBoard';
@@ -10,6 +13,7 @@ type Props = {
   tiles: Array,
   players: Array,
   turn: string,
+  message: Object,
   gameOver: boolean,
   onTilePick: (Object, number) => void,
   onRefreshHand: (string) => void,
@@ -25,14 +29,14 @@ class Scrabble extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={styles.container}>
         <div style={styles.gameBoard}>
-          <Label tag>
-            {`${this.props.tiles.length} tiles left`}
-          </Label>
           <GameBoard />
         </div>
         <div style={styles.playerHands}>
+          <Label tag color='white'>
+            {`${this.props.tiles.length} tiles left`}
+          </Label>
           <Hand
             playerName='Me'
             isBot={false}
@@ -53,6 +57,13 @@ class Scrabble extends React.Component {
             onPlayWord={this.props.onPlayWord}
             onPlayBot={this.props.onPlayBot}
           />
+          {this.props.message && (
+            <Message
+              color={this.props.message.status === 'success' ? 'green' : 'red'}
+            >
+              <Message.Header>{this.props.message.text}</Message.Header>
+            </Message>
+          )}
         </div>
       </div>
     );
@@ -60,6 +71,10 @@ class Scrabble extends React.Component {
 }
 
 const styles = {
+  container: {
+    margin: 'auto',
+    maxWidth: '1200px'
+  },
   gameBoard: {
     display: 'inline-block',
     margin: '25px'

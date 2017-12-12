@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
+import { Header } from 'semantic-ui-react';
 
+import './css/index.css';
 import Scrabble from './components/Scrabble';
 
 class App extends Component {
   render() {
     return (
-      <Scrabble />
+      <div>
+        <h1 className='scrabbleHeader'>
+          Scrabble.ai
+        </h1>
+        <Scrabble />
+      </div>
     );
   }
 }
+
+
 
 export default App;
