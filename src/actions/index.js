@@ -20,6 +20,11 @@ const onRefreshHand = (playerId) => (dispatch, _) => {
   dispatch(displayMessage());
 };
 
+const onShuffleHand = (playerId) => ({
+  type: ScrabbleActionTypes.ON_SHUFFLE_HAND,
+  playerId: playerId
+});
+
 const updateBoard = (board) => ({
   type: ScrabbleActionTypes.UPDATE_BOARD,
   board: board
@@ -181,6 +186,7 @@ export default {
   onMoveTile,
   onTilePick,
   onRefreshHand,
+  onShuffleHand,
   onPlayWord,
   findBestWord
 };

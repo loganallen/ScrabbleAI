@@ -18,6 +18,7 @@ type Props = {
   gameOver: boolean,
   onTilePick: (Object, number) => void,
   onRefreshHand: (string) => void,
+  onShuffleHand: (string) => void,
   onPlayWord: () => void,
   onPlayBot: (Array) => void
 };
@@ -55,7 +56,7 @@ class Scrabble extends React.Component {
           <GameBoard />
         </div>
         <div style={styles.playerHands}>
-          <Label tag color='white'>
+          <Label tag>
             {`${this.props.tiles.length} tiles left`}
           </Label>
           <Hand
@@ -65,6 +66,7 @@ class Scrabble extends React.Component {
             currentTurn={this.props.turn === 'p1' && !this.props.gameOver}
             onTilePick={this.props.onTilePick}
             onRefreshHand={ () => this.props.onRefreshHand('p1') }
+            onShuffleHand={ () => this.props.onShuffleHand('p1') }
             onPlayWord={this.props.onPlayWord}
             onPlayBot={this.props.onPlayBot}
           />
@@ -75,6 +77,7 @@ class Scrabble extends React.Component {
             currentTurn={this.props.turn === 'p2' && !this.props.gameOver}
             onTilePick={this.props.onTilePick}
             onRefreshHand={ () => this.props.onRefreshHand('p2') }
+            onShuffleHand={ () => this.props.onShuffleHand('p1') }
             onPlayWord={this.props.onPlayWord}
             onPlayBot={this.props.onPlayBot}
           />
@@ -110,6 +113,7 @@ const mapDispatch = (dispatch) => {
   return {
     onTilePick: (tile, idx) => dispatch(ScrabbleActions.onTilePick(tile, idx)),
     onRefreshHand: (player) => dispatch(ScrabbleActions.onRefreshHand(player)),
+    onShuffleHand: (player) => dispatch(ScrabbleActions.onShuffleHand(player)),
     onPlayWord: () => dispatch(ScrabbleActions.onPlayWord()),
     onPlayBot: (hand) => dispatch(ScrabbleActions.findBestWord(hand))
   };

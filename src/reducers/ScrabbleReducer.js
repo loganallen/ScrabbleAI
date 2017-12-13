@@ -49,6 +49,7 @@ const scrabbleReducer = (state = initialState, action) => {
   case ScrabbleActionTypes.REMOVE_TILE_FROM_HAND: {
     let players = Object.assign({}, state.players);
     players[state.turn].hand[action.index].onBoard = true;
+
     return {
       ...state,
       players: players
@@ -59,6 +60,17 @@ const scrabbleReducer = (state = initialState, action) => {
     players[action.playerId].hand.forEach(tile => {
       tile.onBoard = false;
     });
+
+    return {
+      ...state,
+      players: players
+    };
+  }
+  case ScrabbleActionTypes.ON_SHUFFLE_HAND: {
+    let players = Object.assign({}, state.players);
+    let hand = players[action.playerId].hand;
+    players[action.playerId].hand = _.shuffle(hand);
+
     return {
       ...state,
       players: players

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Header } from 'semantic-ui-react';
 
 import './css/index.css';
 import Scrabble from './components/Scrabble';

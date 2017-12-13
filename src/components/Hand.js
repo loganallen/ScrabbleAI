@@ -16,6 +16,7 @@ type Props = {
   currentTurn: boolean,
   onTilePick: (Object, number) => void,
   onRefreshHand: () => void,
+  onShuffleHand: () => void,
   onPlayWord: () => void,
   onPlayBot?: () => void
 };
@@ -31,10 +32,6 @@ class Hand extends React.Component {
     if (!tile.onBoard) {
       this.props.onTilePick(tile, idx);
     }
-  }
-
-  onShuffleHand = () => {
-    // TODO: Shuffle tiles in hand
   }
 
   handlePlayClick = () => {
@@ -57,7 +54,7 @@ class Hand extends React.Component {
     if (this._tilesOnBoard()) {
       this.props.onRefreshHand();
     } else {
-      // this.props.onShuffleHand();
+      this.props.onShuffleHand();
     }
   }
 
