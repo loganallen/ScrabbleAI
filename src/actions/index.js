@@ -10,10 +10,15 @@ const onTilePick = (tile, index?) => ({
   }
 });
 
-const onRefreshHand = (playerId) => ({
+const refreshHand = (playerId) => ({
   type: ScrabbleActionTypes.ON_REFRESH_HAND,
   playerId: playerId
 });
+
+const onRefreshHand = (playerId) => (dispatch, _) => {
+  dispatch(refreshHand(playerId));
+  dispatch(displayMessage());
+};
 
 const updateBoard = (board) => ({
   type: ScrabbleActionTypes.UPDATE_BOARD,
@@ -30,7 +35,7 @@ const updateMessage = (message?) => ({
   message: message
 });
 
-const displayMessage = (message) => (dispatch, _) => {
+const displayMessage = (message?) => (dispatch, _) => {
   dispatch(updateMessage(message));
   // Remove message after 5 seconds
   // setTimeout(() => {
@@ -64,7 +69,11 @@ const onDropTile = (tile, location) => (dispatch, getState) => {
     hand: hand
   }).then(res => {
     let [words, points] = [res.data.words, res.data.points];
-    console.log(words, points);
+    let msg = `Play ${words.join(', ')} for ${points} points`;
+    dispatch(displayMessage({
+      status: 'notification',
+      text: msg
+    }));
   }).catch(err => {
     console.log(err);
   });

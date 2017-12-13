@@ -7,7 +7,8 @@ const ScrabbleActionTypes = keyMirror({
   REMOVE_TILE_FROM_HAND: null,
   SET_TILES: null,
   EXECUTE_TURN: null,
-  UPDATE_MESSAGE: null
+  UPDATE_MESSAGE: null,
+  SET_POSSIBLE_POINTS: null
 });
 
 export default ScrabbleActionTypes;

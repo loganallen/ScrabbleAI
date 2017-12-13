@@ -33,6 +33,7 @@ const initiategameState = () => {
     tiles,
     players,
     turn: 'p1',
+    possiblePoints: 0,
     firstTurn: true,
     message: null,
     gameOver: false
@@ -99,6 +100,11 @@ const scrabbleReducer = (state = initialState, action) => {
     return {
       ...state,
       message: action.message
+    };
+  case ScrabbleActionTypes.SET_POSSIBLE_POINTS:
+    return {
+      ...state,
+      possiblePoints: action.points
     };
   default:
     return state;

@@ -13,6 +13,7 @@ type Props = {
   tiles: Array,
   players: Array,
   turn: string,
+  possiblePoints: number,
   message: Object,
   gameOver: boolean,
   onTilePick: (Object, number) => void,
@@ -25,6 +26,26 @@ class Scrabble extends React.Component {
   constructor(props: Props) {
     super(props);
     this.state = {};
+  }
+
+  _message(): Message {
+    let color;
+    switch (this.props.message.status) {
+      case 'success':
+        color = 'green';
+        break;
+      case 'error':
+        color = 'red';
+        break;
+      default:
+        color = 'yellow';
+    }
+
+    return (
+      <Message color={color}>
+        <Message.Header>{this.props.message.text}</Message.Header>
+      </Message>
+    )
   }
 
   render() {
@@ -57,13 +78,7 @@ class Scrabble extends React.Component {
             onPlayWord={this.props.onPlayWord}
             onPlayBot={this.props.onPlayBot}
           />
-          {this.props.message && (
-            <Message
-              color={this.props.message.status === 'success' ? 'green' : 'red'}
-            >
-              <Message.Header>{this.props.message.text}</Message.Header>
-            </Message>
-          )}
+          {this.props.message && this._message()}
         </div>
       </div>
     );

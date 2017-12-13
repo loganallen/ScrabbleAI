@@ -18,14 +18,12 @@ type Props = {
   onRefreshHand: () => void,
   onPlayWord: () => void,
   onPlayBot?: () => void
-}
+};
 
 class Hand extends React.Component {
   constructor(props: Props) {
     super(props);
-    this.state = {
-      isBot: props.isBot
-    };
+    this.state = {};
   }
 
   handleTileClick = (tile, idx) => {
@@ -42,7 +40,7 @@ class Hand extends React.Component {
   handlePlayClick = () => {
     if (!this.props.currentTurn) return;
 
-    if (this.state.isBot) {
+    if (this.props.isBot) {
       this.props.onPlayBot(this.props.hand);
     } else {
       let tilesOnBoard = this.props.hand.reduce((acc, el) => {
