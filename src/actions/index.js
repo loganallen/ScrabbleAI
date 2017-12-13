@@ -101,11 +101,14 @@ const _validateWords = (words, points) => (dispatch, getState) => {
   }).then(res => {
     if (res.data.valid) {
       // Set words on board, give points to player, replenish player's hand, switch turn
-      dispatch(setTiles(getState().boardState.board));
+      let state = getState();
+      dispatch(setTiles(state.boardState.board));
       dispatch(executeTurn(points));
+      let name = state.gameState.playingBot ?
+        'You' : state.gameState.playerNames[state.gameState.turn];
       dispatch(displayMessage({
         status: 'success',
-        text: `You played ${words} for ${points} points`
+        text: `${name} played ${words} for ${points} points`
       }));
     } else {
       let invalidWords = res.data.invalidWords.join(', ');
@@ -170,9 +173,10 @@ const findBestWord = (hand) => (dispatch, getState) => {
   }).then(res => {
     // TODO: Error detection from backend
     let words = res.data.words.join(', ');
+    let botName = state.gameState.playerNames[1];
     dispatch(displayMessage({
       status: 'success',
-      text: `AI bot played ${words} for ${res.data.points} points`
+      text: `${botName} played ${words} for ${res.data.points} points`
     }));
     dispatch(setTiles(res.data.board));
     dispatch(executeTurn(res.data.points, res.data.hand));
@@ -181,6 +185,14 @@ const findBestWord = (hand) => (dispatch, getState) => {
   });
 };
 
+const onStartGame = (playerNames, playingBot) => ({
+  type: ScrabbleActionTypes.ON_START_GAME,
+  data: {
+    playerNames,
+    playingBot
+  }
+});
+
 export default {
   onDropTile,
   onMoveTile,
@@ -188,5 +200,6 @@ export default {
   onRefreshHand,
   onShuffleHand,
   onPlayWord,
-  findBestWord
+  findBestWord,
+  onStartGame
 };

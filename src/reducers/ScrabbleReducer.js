@@ -20,19 +20,21 @@ const initiategameState = () => {
     tiles = _.shuffle(tiles);
   }
 
-  let players = {
-    'p1': { hand: [], score: 0 },
-    'p2': { hand: [], score: 0 }
-  };
+  let players = [
+    { hand: [], score: 0 },
+    { hand: [], score: 0 }
+  ];
   for (let i=0; i<7; i++) {
-    players['p1'].hand.push(tiles.pop());
-    players['p2'].hand.push(tiles.pop());
+    players[0].hand.push(tiles.pop());
+    players[1].hand.push(tiles.pop());
   }
 
   return {
+    playerNames: ['', ''],
+    playingBot: true,
     tiles,
     players,
-    turn: 'p1',
+    turn: 0,
     possiblePoints: 0,
     firstTurn: true,
     message: null,
@@ -46,8 +48,14 @@ const initialState = {
 
 const scrabbleReducer = (state = initialState, action) => {
   switch (action.type) {
+  case ScrabbleActionTypes.ON_START_GAME:
+    return {
+      ...state,
+      playerNames: action.data.playerNames,
+      playingBot: action.data.playingBot
+    };
   case ScrabbleActionTypes.REMOVE_TILE_FROM_HAND: {
-    let players = Object.assign({}, state.players);
+    let players = [...state.players];
     players[state.turn].hand[action.index].onBoard = true;
 
     return {
@@ -56,7 +64,7 @@ const scrabbleReducer = (state = initialState, action) => {
     };
   }
   case ScrabbleActionTypes.ON_REFRESH_HAND: {
-    let players = Object.assign({}, state.players);
+    let players = [...state.players];
     players[action.playerId].hand.forEach(tile => {
       tile.onBoard = false;
     });
@@ -67,7 +75,7 @@ const scrabbleReducer = (state = initialState, action) => {
     };
   }
   case ScrabbleActionTypes.ON_SHUFFLE_HAND: {
-    let players = Object.assign({}, state.players);
+    let players = [...state.players];
     let hand = players[action.playerId].hand;
     players[action.playerId].hand = _.shuffle(hand);
 
@@ -78,7 +86,7 @@ const scrabbleReducer = (state = initialState, action) => {
   }
   case ScrabbleActionTypes.EXECUTE_TURN: {
     let tiles = [...state.tiles];
-    let players = Object.assign({}, state.players);
+    let players = [...state.players];
     let player = players[state.turn];
 
     player.score += action.points;
@@ -90,7 +98,7 @@ const scrabbleReducer = (state = initialState, action) => {
       player.hand.push(tile);
     }
 
-    let opponent = state.turn === 'p1' ? 'p2' : 'p1';
+    let opponent = state.turn === 0 ? 1 : 0;
 
     // Add 2x the points leftover in the opponent's hand
     if (player.hand.length === 0) {

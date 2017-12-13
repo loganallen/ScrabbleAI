@@ -9,7 +9,8 @@ const ScrabbleActionTypes = keyMirror({
   SET_TILES: null,
   EXECUTE_TURN: null,
   UPDATE_MESSAGE: null,
-  SET_POSSIBLE_POINTS: null
+  SET_POSSIBLE_POINTS: null,
+  ON_START_GAME: null
 });
 
 export default ScrabbleActionTypes;

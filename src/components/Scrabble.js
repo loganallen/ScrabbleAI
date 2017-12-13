@@ -10,6 +10,8 @@ import GameBoard from './GameBoard';
 import Hand from './Hand';
 
 type Props = {
+  playerNames: Array,
+  playingBot: boolean,
   tiles: Array,
   players: Array,
   turn: string,
@@ -60,24 +62,24 @@ class Scrabble extends React.Component {
             {`${this.props.tiles.length} tiles left`}
           </Label>
           <Hand
-            playerName='Me'
+            playerName={this.props.playerNames[0]}
             isBot={false}
-            {...this.props.players['p1']}
-            currentTurn={this.props.turn === 'p1' && !this.props.gameOver}
+            {...this.props.players[0]}
+            currentTurn={this.props.turn === 0 && !this.props.gameOver}
             onTilePick={this.props.onTilePick}
-            onRefreshHand={ () => this.props.onRefreshHand('p1') }
-            onShuffleHand={ () => this.props.onShuffleHand('p1') }
+            onRefreshHand={ () => this.props.onRefreshHand(0) }
+            onShuffleHand={ () => this.props.onShuffleHand(0) }
             onPlayWord={this.props.onPlayWord}
             onPlayBot={this.props.onPlayBot}
           />
           <Hand
-            playerName='Bot'
-            isBot={true}
-            {...this.props.players['p2']}
-            currentTurn={this.props.turn === 'p2' && !this.props.gameOver}
+            playerName={this.props.playerNames[1]}
+            isBot={this.props.playingBot}
+            {...this.props.players[1]}
+            currentTurn={this.props.turn === 1 && !this.props.gameOver}
             onTilePick={this.props.onTilePick}
-            onRefreshHand={ () => this.props.onRefreshHand('p2') }
-            onShuffleHand={ () => this.props.onShuffleHand('p1') }
+            onRefreshHand={ () => this.props.onRefreshHand(1) }
+            onShuffleHand={ () => this.props.onShuffleHand(1) }
             onPlayWord={this.props.onPlayWord}
             onPlayBot={this.props.onPlayBot}
           />
@@ -112,8 +114,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     onTilePick: (tile, idx) => dispatch(ScrabbleActions.onTilePick(tile, idx)),
-    onRefreshHand: (player) => dispatch(ScrabbleActions.onRefreshHand(player)),
-    onShuffleHand: (player) => dispatch(ScrabbleActions.onShuffleHand(player)),
+    onRefreshHand: (playerId) => dispatch(ScrabbleActions.onRefreshHand(playerId)),
+    onShuffleHand: (playerId) => dispatch(ScrabbleActions.onShuffleHand(playerId)),
     onPlayWord: () => dispatch(ScrabbleActions.onPlayWord()),
     onPlayBot: (hand) => dispatch(ScrabbleActions.findBestWord(hand))
   };
