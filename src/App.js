@@ -40,7 +40,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    onStartGame: (names, bot) => dispatch(ScrabbleActions.onStartGame(names, bot))
+    onStartGame: (names, bot, level) => dispatch(ScrabbleActions.onStartGame(names, bot, level))
   };
 };
 

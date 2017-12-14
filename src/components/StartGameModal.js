@@ -7,8 +7,10 @@ import {
   Tab
 } from 'semantic-ui-react';
 
+import { botLevels } from '../utils';
+
 type Props = {
-  onStartGame: (Array, boolean) => void
+  onStartGame: (Array, boolean, number) => void
 };
 
 class StartGameModal extends React.Component {
@@ -17,12 +19,17 @@ class StartGameModal extends React.Component {
     this.state = {
       open: true,
       playerNames: ['', ''],
-      activeIndex: 0
+      activeIndex: 0,
+      selectedLevel: 0
     };
   }
 
   handleStartGame = () => {
-    this.props.onStartGame(this.state.playerNames, this.state.activeIndex === 0);
+    this.props.onStartGame(
+      this.state.playerNames,
+      this.state.activeIndex === 0,
+      this.state.selectedLevel
+    );
     this.setState({
       open: false
     });
@@ -43,7 +50,40 @@ class StartGameModal extends React.Component {
     });
   }
 
+  handleLevelChange = (idx) => {
+    if (this.state.selectedLevel !== idx) {
+      this.setState({
+        selectedLevel: idx
+      });
+    }
+  }
+
   _humanVsBotPane() {
+    let levelButtons = botLevels.map((level, idx) => {
+      if (this.state.selectedLevel === idx) {
+        return (
+          <Button
+            key={idx}
+            basic
+            color='teal'
+            onClick={ () => this.handleLevelChange(idx) }
+          >
+            {level}
+          </Button>
+        );
+      } else {
+        return (
+          <Button
+            key={idx}
+            basic
+            onClick={ () => this.handleLevelChange(idx) }
+          >
+            {level}
+          </Button>
+        );
+      }
+    });
+
     return (
       <div>
         <br/>
@@ -62,7 +102,8 @@ class StartGameModal extends React.Component {
           onChange={ (_,d) => this.handleInputChange(d.value, 1) }
           value={this.state.playerNames[1]}
         />
-        <br/>
+        <br/><br/>
+        {levelButtons}
       </div>
     );
   }
@@ -121,7 +162,7 @@ class StartGameModal extends React.Component {
           {this._tabSection()}
         </Modal.Content>
         <Modal.Actions>
-          <Button primary disabled={!startEnabled} onClick={this.handleStartGame}>
+          <Button color='teal' disabled={!startEnabled} onClick={this.handleStartGame}>
             Start Game
           </Button>
         </Modal.Actions>

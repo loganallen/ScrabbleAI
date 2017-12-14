@@ -32,6 +32,8 @@ export const scrabbleLetters = {
   10: [['Q',1], ['Z',1]]
 };
 
+export const botLevels = ['Beginner', 'Intermediate', 'Expert'];
+
 export const _cloneBoard = (board) => {
   return board.map(row => row.map(space => ( {...space} )));
 };

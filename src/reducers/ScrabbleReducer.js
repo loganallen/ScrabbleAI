@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import ScrabbleActionTypes from '../actions/ActionTypes';
-import { scrabbleLetters } from '../utils';
+import { scrabbleLetters, botLevels } from '../utils';
 
 const initiategameState = () => {
   let tiles = [];
@@ -32,6 +32,7 @@ const initiategameState = () => {
   return {
     playerNames: ['', ''],
     playingBot: true,
+    botLevel: botLevels[1],
     tiles,
     players,
     turn: 0,
@@ -52,7 +53,8 @@ const scrabbleReducer = (state = initialState, action) => {
     return {
       ...state,
       playerNames: action.data.playerNames,
-      playingBot: action.data.playingBot
+      playingBot: action.data.playingBot,
+      botLevel: botLevels[action.data.botLevelIdx]
     };
   case ScrabbleActionTypes.REMOVE_TILE_FROM_HAND: {
     let players = [...state.players];

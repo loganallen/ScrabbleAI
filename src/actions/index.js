@@ -162,14 +162,13 @@ const onPlayWord = () => (dispatch, getState) => {
 };
 
 const findBestWord = (hand) => (dispatch, getState) => {
-  console.log('Finding best word...');
   let state = getState();
   axios.post('/findBestWord', {
     board: state.boardState.board,
     hand: hand,
     firstTurn: state.gameState.firstTurn,
     isGreedy: false,
-    level: 'INTERMEDIATE'
+    level: state.gameState.botLevel
   }).then(res => {
     // TODO: Error detection from backend
     let words = res.data.words.join(', ');
@@ -185,11 +184,12 @@ const findBestWord = (hand) => (dispatch, getState) => {
   });
 };
 
-const onStartGame = (playerNames, playingBot) => ({
+const onStartGame = (playerNames, playingBot, botLevelIdx) => ({
   type: ScrabbleActionTypes.ON_START_GAME,
   data: {
     playerNames,
-    playingBot
+    playingBot,
+    botLevelIdx
   }
 });
 
