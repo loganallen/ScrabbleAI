@@ -114,7 +114,7 @@ const scrabbleReducer = (state = initialState, action) => {
       tiles: _.shuffle(tiles),
       players: players,
       turn: opponent,
-      firstTurn: false,
+      firstTurn: !(state.firstTurn && action.points > 0),
       gameOver: player.hand.length === 0
     }
   }

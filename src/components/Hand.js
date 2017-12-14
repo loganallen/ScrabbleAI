@@ -18,6 +18,7 @@ type Props = {
   onRefreshHand: () => void,
   onShuffleHand: () => void,
   onPlayWord: () => void,
+  onSkipTurn: () => void,
   onPlayBot?: () => void
 };
 
@@ -40,14 +41,16 @@ class Hand extends React.Component {
     if (this.props.isBot) {
       this.props.onPlayBot(this.props.hand);
     } else {
-      let tilesOnBoard = this.props.hand.reduce((acc, el) => {
-        return acc || el.onBoard;
-      }, false);
-
-      if (tilesOnBoard) {
+      if (this._tilesOnBoard()) {
         this.props.onPlayWord();
       }
     }
+  }
+
+  handlePassClick = () => {
+    if (!this.props.currentTurn) return;
+
+    this.props.onSkipTurn();
   }
 
   handleEditHand = () => {
@@ -106,6 +109,16 @@ class Hand extends React.Component {
           onClick={this.handlePlayClick}
           disabled={!this.props.currentTurn}
         />
+        {!this.props.isBot &&
+          (<Button
+            style={styles.buttons}
+            content='Pass'
+            basic
+            color='teal'
+            onClick={this.handlePassClick}
+            disabled={!this.props.currentTurn}
+          />)
+        }
       </Segment>
     );
   }
@@ -113,7 +126,7 @@ class Hand extends React.Component {
 
 const styles = {
   segment: {
-    width: '500px'
+    width: '560px'
   },
   handHeader: {
     width: '100%',

@@ -15,15 +15,21 @@ const refreshHand = (playerId) => ({
   playerId: playerId
 });
 
-const onRefreshHand = (playerId) => (dispatch, _) => {
+const onRefreshHand = () => (dispatch, getState) => {
+  let playerId = getState().gameState.turn;
   dispatch(refreshHand(playerId));
   dispatch(displayMessage());
 };
 
-const onShuffleHand = (playerId) => ({
+const shuffleHand = (playerId) => ({
   type: ScrabbleActionTypes.ON_SHUFFLE_HAND,
   playerId: playerId
 });
+
+const onShuffleHand = () => (dispatch, getState) => {
+  let playerId = getState().gameState.turn;
+  dispatch(shuffleHand(playerId));
+};
 
 const updateBoard = (board) => ({
   type: ScrabbleActionTypes.UPDATE_BOARD,
@@ -161,6 +167,17 @@ const onPlayWord = () => (dispatch, getState) => {
   });
 };
 
+const onSkipTurn = () => (dispatch, getState) => {
+  let state = getState();
+  dispatch(onRefreshHand(state.gameState.turn));
+  dispatch(executeTurn(0));
+  let name = state.gameState.playerNames[state.gameState.turn];
+  dispatch(displayMessage({
+    status: 'success',
+    text: `${name} skipped their turn`
+  }));
+};
+
 const findBestWord = (hand) => (dispatch, getState) => {
   let state = getState();
   axios.post('/findBestWord', {
@@ -200,6 +217,7 @@ export default {
   onRefreshHand,
   onShuffleHand,
   onPlayWord,
+  onSkipTurn,
   findBestWord,
   onStartGame
 };

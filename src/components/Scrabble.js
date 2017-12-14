@@ -19,9 +19,10 @@ type Props = {
   message: Object,
   gameOver: boolean,
   onTilePick: (Object, number) => void,
-  onRefreshHand: (string) => void,
-  onShuffleHand: (string) => void,
+  onRefreshHand: () => void,
+  onShuffleHand: () => void,
   onPlayWord: () => void,
+  onSkipTurn: () => void,
   onPlayBot: (Array) => void
 };
 
@@ -67,9 +68,10 @@ class Scrabble extends React.Component {
             {...this.props.players[0]}
             currentTurn={this.props.turn === 0 && !this.props.gameOver}
             onTilePick={this.props.onTilePick}
-            onRefreshHand={ () => this.props.onRefreshHand(0) }
-            onShuffleHand={ () => this.props.onShuffleHand(0) }
+            onRefreshHand={this.props.onRefreshHand}
+            onShuffleHand={this.props.onShuffleHand}
             onPlayWord={this.props.onPlayWord}
+            onSkipTurn={this.props.onSkipTurn}
             onPlayBot={this.props.onPlayBot}
           />
           <Hand
@@ -78,9 +80,10 @@ class Scrabble extends React.Component {
             {...this.props.players[1]}
             currentTurn={this.props.turn === 1 && !this.props.gameOver}
             onTilePick={this.props.onTilePick}
-            onRefreshHand={ () => this.props.onRefreshHand(1) }
-            onShuffleHand={ () => this.props.onShuffleHand(1) }
+            onRefreshHand={this.props.onRefreshHand}
+            onShuffleHand={this.props.onShuffleHand}
             onPlayWord={this.props.onPlayWord}
+            onSkipTurn={this.props.onSkipTurn}
             onPlayBot={this.props.onPlayBot}
           />
           {this.props.message && this._message()}
@@ -93,7 +96,7 @@ class Scrabble extends React.Component {
 const styles = {
   container: {
     margin: 'auto',
-    maxWidth: '1200px'
+    maxWidth: '1260px'
   },
   gameBoard: {
     display: 'inline-block',
@@ -114,9 +117,10 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     onTilePick: (tile, idx) => dispatch(ScrabbleActions.onTilePick(tile, idx)),
-    onRefreshHand: (playerId) => dispatch(ScrabbleActions.onRefreshHand(playerId)),
-    onShuffleHand: (playerId) => dispatch(ScrabbleActions.onShuffleHand(playerId)),
+    onRefreshHand: () => dispatch(ScrabbleActions.onRefreshHand()),
+    onShuffleHand: () => dispatch(ScrabbleActions.onShuffleHand()),
     onPlayWord: () => dispatch(ScrabbleActions.onPlayWord()),
+    onSkipTurn: () => dispatch(ScrabbleActions.onSkipTurn()),
     onPlayBot: (hand) => dispatch(ScrabbleActions.findBestWord(hand))
   };
 };
