@@ -169,9 +169,10 @@ const onPlayWord = () => (dispatch, getState) => {
 
 const onSkipTurn = () => (dispatch, getState) => {
   let state = getState();
-  dispatch(onRefreshHand(state.gameState.turn));
+  let playerId = state.gameState.turn;
+  dispatch(onRefreshHand(playerId));
   dispatch(executeTurn(0));
-  let name = state.gameState.playerNames[state.gameState.turn];
+  let name = state.gameState.playerNames[playerId];
   dispatch(displayMessage({
     status: 'success',
     text: `${name} skipped their turn`
