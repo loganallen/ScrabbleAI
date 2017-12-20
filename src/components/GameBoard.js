@@ -12,7 +12,7 @@ type Props = {
   board: Array,
   selectedTile?: Object,
   onDropTile: (Object, Array) => void,
-  onMoveTile: (Object, Array) => void
+  onPickupTile: (Object, Array) => void
 };
 
 class GameBoard extends React.Component {
@@ -30,7 +30,7 @@ class GameBoard extends React.Component {
       }
     } else {
       if (boardSpace.tile && !boardSpace.isSet) {
-        this.props.onMoveTile(boardSpace.tile, boardSpace.location);
+        this.props.onPickupTile(boardSpace.tile, boardSpace.location);
       }
     }
   }
@@ -85,7 +85,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     onDropTile: (tile, loc) => dispatch(ScrabbleActions.onDropTile(tile, loc)),
-    onMoveTile: (tile, loc) => dispatch(ScrabbleActions.onMoveTile(tile, loc))
+    onPickupTile: (tile, loc) => dispatch(ScrabbleActions.onPickupTile(tile, loc))
   };
 };
 

@@ -49,7 +49,7 @@ const initialState = {
 
 const scrabbleReducer = (state = initialState, action) => {
   switch (action.type) {
-  case ScrabbleActionTypes.ON_START_GAME:
+  case ScrabbleActionTypes.START_GAME:
     return {
       ...state,
       playerNames: action.data.playerNames,
@@ -65,7 +65,22 @@ const scrabbleReducer = (state = initialState, action) => {
       players: players
     };
   }
-  case ScrabbleActionTypes.ON_REFRESH_HAND: {
+  case ScrabbleActionTypes.RETURN_TILE_TO_HAND: {
+    let players = [...state.players];
+    let replaced = false;
+    players[state.turn].hand.forEach(tile => {
+      if (!replaced && tile.letter === action.tile.letter) {
+        tile.onBoard = false;
+        replaced = true;
+      }
+    });
+
+    return {
+      ...state,
+      players: players
+    };
+  }
+  case ScrabbleActionTypes.REFRESH_HAND: {
     let players = [...state.players];
     players[action.playerId].hand.forEach(tile => {
       tile.onBoard = false;
@@ -76,7 +91,7 @@ const scrabbleReducer = (state = initialState, action) => {
       players: players
     };
   }
-  case ScrabbleActionTypes.ON_SHUFFLE_HAND: {
+  case ScrabbleActionTypes.SHUFFLE_HAND: {
     let players = [...state.players];
     let hand = players[action.playerId].hand;
     players[action.playerId].hand = _.shuffle(hand);

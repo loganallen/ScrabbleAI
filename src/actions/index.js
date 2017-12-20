@@ -2,8 +2,17 @@ import axios from 'axios';
 import ScrabbleActionTypes from './ActionTypes';
 import { _cloneBoard } from '../utils';
 
-const onTilePick = (tile, index?) => ({
-  type: ScrabbleActionTypes.ON_TILE_PICK,
+const onStartGame = (playerNames, playingBot, botLevelIdx) => ({
+  type: ScrabbleActionTypes.START_GAME,
+  data: {
+    playerNames,
+    playingBot,
+    botLevelIdx
+  }
+});
+
+const onSelectTile = (tile, index?) => ({
+  type: ScrabbleActionTypes.SELECT_TILE,
   data: {
     tile,
     index
@@ -11,7 +20,12 @@ const onTilePick = (tile, index?) => ({
 });
 
 const refreshHand = (playerId) => ({
-  type: ScrabbleActionTypes.ON_REFRESH_HAND,
+  type: ScrabbleActionTypes.REFRESH_HAND,
+  playerId: playerId
+});
+
+const shuffleHand = (playerId) => ({
+  type: ScrabbleActionTypes.SHUFFLE_HAND,
   playerId: playerId
 });
 
@@ -21,24 +35,24 @@ const onRefreshHand = () => (dispatch, getState) => {
   dispatch(displayMessage());
 };
 
-const shuffleHand = (playerId) => ({
-  type: ScrabbleActionTypes.ON_SHUFFLE_HAND,
-  playerId: playerId
-});
-
 const onShuffleHand = () => (dispatch, getState) => {
   let playerId = getState().gameState.turn;
   dispatch(shuffleHand(playerId));
 };
 
-const updateBoard = (board) => ({
-  type: ScrabbleActionTypes.UPDATE_BOARD,
-  board: board
-});
-
 const removeTileFromHand = (index) => ({
   type: ScrabbleActionTypes.REMOVE_TILE_FROM_HAND,
   index: index
+});
+
+const returnTileToHand = (tile) => ({
+  type: ScrabbleActionTypes.RETURN_TILE_TO_HAND,
+  tile: tile
+});
+
+const updateBoard = (board) => ({
+  type: ScrabbleActionTypes.UPDATE_BOARD,
+  board: board
 });
 
 const updateMessage = (message?) => ({
@@ -48,18 +62,10 @@ const updateMessage = (message?) => ({
 
 const displayMessage = (message?) => (dispatch, _) => {
   dispatch(updateMessage(message));
-  // Remove message after 5 seconds
+  // Message timeout of 5 seconds
   // setTimeout(() => {
   //   dispatch(updateMessage());
   // }, 5000);
-};
-
-const onMoveTile = (tile, location) => (dispatch, getState) => {
-  let board = _cloneBoard(getState().boardState.board);
-  let [r,c] = location;
-  board[r][c].tile = null;
-  dispatch(updateBoard(board));
-  dispatch(onTilePick(tile));
 };
 
 const onDropTile = (tile, location) => (dispatch, getState) => {
@@ -90,6 +96,14 @@ const onDropTile = (tile, location) => (dispatch, getState) => {
   });
 };
 
+const onPickupTile = (tile, location) => (dispatch, getState) => {
+  let board = _cloneBoard(getState().boardState.board);
+  let [r,c] = location;
+  board[r][c].tile = null;
+  dispatch(updateBoard(board));
+  dispatch(returnTileToHand(tile));
+};
+
 const setTiles = (board) => ({
   type: ScrabbleActionTypes.SET_TILES,
   board: board
@@ -106,7 +120,6 @@ const _validateWords = (words, points) => (dispatch, getState) => {
     words: words
   }).then(res => {
     if (res.data.valid) {
-      // Set words on board, give points to player, replenish player's hand, switch turn
       let state = getState();
       dispatch(setTiles(state.boardState.board));
       dispatch(executeTurn(points));
@@ -114,7 +127,7 @@ const _validateWords = (words, points) => (dispatch, getState) => {
         'You' : state.gameState.playerNames[state.gameState.turn];
       dispatch(displayMessage({
         status: 'success',
-        text: `${name} played ${words} for ${points} points`
+        text: `${name} played ${words.join(', ')} for ${points} points`
       }));
     } else {
       let invalidWords = res.data.invalidWords.join(', ');
@@ -179,7 +192,7 @@ const onSkipTurn = () => (dispatch, getState) => {
   }));
 };
 
-const findBestWord = (hand) => (dispatch, getState) => {
+const onPlayBot = (hand) => (dispatch, getState) => {
   let state = getState();
   axios.post('/findBestWord', {
     board: state.boardState.board,
@@ -188,7 +201,6 @@ const findBestWord = (hand) => (dispatch, getState) => {
     isGreedy: false,
     level: state.gameState.botLevel
   }).then(res => {
-    // TODO: Error detection from backend
     let words = res.data.words.join(', ');
     let botName = state.gameState.playerNames[1];
     dispatch(displayMessage({
@@ -202,23 +214,14 @@ const findBestWord = (hand) => (dispatch, getState) => {
   });
 };
 
-const onStartGame = (playerNames, playingBot, botLevelIdx) => ({
-  type: ScrabbleActionTypes.ON_START_GAME,
-  data: {
-    playerNames,
-    playingBot,
-    botLevelIdx
-  }
-});
-
 export default {
   onDropTile,
-  onMoveTile,
-  onTilePick,
+  onPickupTile,
+  onSelectTile,
   onRefreshHand,
   onShuffleHand,
   onPlayWord,
   onSkipTurn,
-  findBestWord,
+  onPlayBot,
   onStartGame
 };

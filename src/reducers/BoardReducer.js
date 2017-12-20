@@ -41,7 +41,7 @@ const initialState = {
 
 const boardReducer = (state = initialState, action) => {
   switch (action.type) {
-  case ScrabbleActionTypes.ON_TILE_PICK:
+  case ScrabbleActionTypes.SELECT_TILE:
     return {
       ...state,
       selectedTile: {
@@ -49,7 +49,7 @@ const boardReducer = (state = initialState, action) => {
         handIndex: action.data.index
       }
     };
-  case ScrabbleActionTypes.ON_REFRESH_HAND: {
+  case ScrabbleActionTypes.REFRESH_HAND: {
     let board = [...state.board];
     board.forEach(row => {
       row.forEach(space => {

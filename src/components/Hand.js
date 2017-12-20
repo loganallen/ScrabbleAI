@@ -14,7 +14,7 @@ type Props = {
   hand: Array,
   score: number,
   currentTurn: boolean,
-  onTilePick: (Object, number) => void,
+  onSelectTile: (Object, number) => void,
   onRefreshHand: () => void,
   onShuffleHand: () => void,
   onPlayWord: () => void,
@@ -31,7 +31,7 @@ class Hand extends React.Component {
   handleTileClick = (tile, idx) => {
     if (!this.props.currentTurn) return;
     if (!tile.onBoard) {
-      this.props.onTilePick(tile, idx);
+      this.props.onSelectTile(tile, idx);
     }
   }
 
