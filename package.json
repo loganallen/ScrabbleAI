@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "classnames": "^2.2.5",
     "keymirror": "^0.1.1",
     "react": "^16.1.0",
     "react-dom": "^16.1.0",

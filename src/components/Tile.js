@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 type Props = {
   clickable: boolean,
@@ -18,52 +19,23 @@ class Tile extends React.Component {
   }
 
   render() {
+    let tileClass = classNames({
+      'handTile': true,
+      'clickable': this.props.clickable,
+      'onBoard': this.props.onBoard
+    });
+
     return (
       <div
-        style={{
-          ...styles.tile,
-          ...(this.props.clickable ? styles.clickable : {}),
-          ...(this.props.onBoard ? styles.onBoard : {})
-        }}
+        className={tileClass}
         onClick={this.props.onClick}
       >
         {this.props.hiddenLabel ? '?' : this.props.letter}
-        <div style={styles.tileValue}>
+        <div className='tileValue'>
           {this.props.hiddenLabel ? '' : this.props.value}
         </div>
       </div>
     );
-  }
-}
-
-const styles = {
-  tile: {
-    backgroundColor: '#ff9933',
-    margin: '2px',
-    paddingTop: '12px',
-    width: '40px',
-    height: '40px',
-    borderRadius: '4px',
-    textAlign: 'center',
-    color: 'black',
-    fontWeight: 'bold',
-    display: 'inline-block',
-    position: 'relative',
-    cursor: 'default'
-  },
-  clickable: {
-    cursor: 'pointer'
-  },
-  onBoard: {
-    backgroundColor: '#ffbf80'
-  },
-  tileValue: {
-    position: 'absolute',
-    top: '0px',
-    right: '3px',
-    fontSize: '10px',
-    fontWeight: 'normal',
-    color: 'black'
   }
 }
 

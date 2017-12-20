@@ -61,20 +61,13 @@ class GameBoard extends React.Component {
   render() {
     return (
       <Segment raised>
-        <div style={styles.board}>
+        <div id='gameBoard'>
           {this._gameBoard()}
         </div>
       </Segment>
     );
   }
 }
-
-const styles = {
-  board: {
-    padding: '25px 20px',
-    width: '570px'
-  }
-};
 
 const mapState = (state) => {
   return {

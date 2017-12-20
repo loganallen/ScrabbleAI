@@ -81,8 +81,8 @@ class Hand extends React.Component {
 
   render() {
     return (
-      <Segment raised style={styles.segment}>
-        <div style={styles.handHeader}>
+      <Segment className='handSegment' raised>
+        <div className='handHeader'>
           <Label ribbon color='teal' size='medium'>
             {this.props.playerName}
           </Label>
@@ -94,7 +94,7 @@ class Hand extends React.Component {
         {this._hand()}
         {!this.props.isBot &&
           (<Button
-            style={styles.buttons}
+            className='handButton'
             icon={this._tilesOnBoard() ? 'undo' : 'random'}
             circular
             onClick={this.handleEditHand}
@@ -102,7 +102,7 @@ class Hand extends React.Component {
           />)
         }
         <Button
-          style={styles.buttons}
+          className='handButton'
           content='Play'
           color='teal'
           basic={!this.props.currentTurn}
@@ -111,7 +111,7 @@ class Hand extends React.Component {
         />
         {!this.props.isBot &&
           (<Button
-            style={styles.buttons}
+            className='handButton'
             content='Pass'
             basic
             color='teal'
@@ -123,18 +123,5 @@ class Hand extends React.Component {
     );
   }
 }
-
-const styles = {
-  segment: {
-    width: '560px'
-  },
-  handHeader: {
-    width: '100%',
-    height: '60px'
-  },
-  buttons: {
-    marginLeft: '10px'
-  }
-};
 
 export default Hand;

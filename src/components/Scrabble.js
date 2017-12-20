@@ -54,11 +54,11 @@ class Scrabble extends React.Component {
 
   render() {
     return (
-      <div style={styles.container}>
-        <div style={styles.gameBoard}>
+      <div id='scrabbleContainer'>
+        <div id='scrabbleBoard'>
           <GameBoard />
         </div>
-        <div style={styles.playerHands}>
+        <div id='playerHands'>
           <Label tag>
             {`${this.props.tiles.length} tiles left`}
           </Label>
@@ -92,21 +92,6 @@ class Scrabble extends React.Component {
     );
   }
 }
-
-const styles = {
-  container: {
-    margin: 'auto',
-    maxWidth: '1260px'
-  },
-  gameBoard: {
-    display: 'inline-block',
-    margin: '25px'
-  },
-  playerHands: {
-    margin: '25px',
-    float: 'right'
-  }
-};
 
 const mapState = (state) => {
   return {
