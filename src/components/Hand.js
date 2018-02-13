@@ -25,7 +25,15 @@ type Props = {
 class Hand extends React.Component {
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      playButtonEnabled: props.currentTurn
+    };
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    this.setState({
+      playButtonEnabled: nextProps.currentTurn
+    });
   }
 
   handleTileClick = (tile, idx) => {
@@ -39,9 +47,15 @@ class Hand extends React.Component {
     if (!this.props.currentTurn) return;
 
     if (this.props.isBot) {
+      this.setState({
+        playButtonEnabled: false
+      });
       this.props.onPlayBot(this.props.hand);
     } else {
       if (this._tilesOnBoard()) {
+        this.setState({
+          playButtonEnabled: false
+        });
         this.props.onPlayWord();
       }
     }
@@ -107,7 +121,7 @@ class Hand extends React.Component {
           color='teal'
           basic={!this.props.currentTurn}
           onClick={this.handlePlayClick}
-          disabled={!this.props.currentTurn}
+          disabled={!this.state.playButtonEnabled}
         />
         {!this.props.isBot &&
           (<Button
