@@ -36,6 +36,10 @@ class Hand extends React.Component {
     });
   }
 
+  hasTilesOnBoard = () => {
+    return this.props.hand.reduce((acc, tile) => acc || tile.onBoard, false);
+  }
+
   handleTileClick = (tile, idx) => {
     if (!this.props.currentTurn) return;
     if (!tile.onBoard) {
@@ -52,7 +56,7 @@ class Hand extends React.Component {
       });
       this.props.onPlayBot(this.props.hand);
     } else {
-      if (this._tilesOnBoard()) {
+      if (this.hasTilesOnBoard()) {
         this.setState({
           playButtonEnabled: false
         });
@@ -68,18 +72,14 @@ class Hand extends React.Component {
   }
 
   handleEditHand = () => {
-    if (this._tilesOnBoard()) {
+    if (this.hasTilesOnBoard()) {
       this.props.onRefreshHand();
     } else {
       this.props.onShuffleHand();
     }
   }
 
-  _tilesOnBoard = () => {
-    return this.props.hand.reduce((acc, tile) => acc || tile.onBoard, false);
-  }
-
-  _hand(): Array<Tile> {
+  renderHand(): Array<Tile> {
     const tiles = this.props.hand.map((tile, idx) => (
       <Tile
         key={idx}
@@ -105,11 +105,11 @@ class Hand extends React.Component {
             <Statistic.Label>Score</Statistic.Label>
           </Statistic>
         </div>
-        {this._hand()}
+        {this.renderHand()}
         {!this.props.isBot &&
           (<Button
             className='handButton'
-            icon={this._tilesOnBoard() ? 'undo' : 'random'}
+            icon={this.hasTilesOnBoard() ? 'undo' : 'random'}
             circular
             onClick={this.handleEditHand}
             disabled={!this.props.currentTurn}

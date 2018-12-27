@@ -58,7 +58,7 @@ class StartGameModal extends React.Component {
     }
   }
 
-  _humanVsBotPane() {
+  renderHumanVsBotPane() {
     let levelButtons = botLevels.map((level, idx) => {
       if (this.state.selectedLevel === idx) {
         return (
@@ -108,7 +108,7 @@ class StartGameModal extends React.Component {
     );
   }
 
-  _humanVsHumanPane() {
+  renderHumanVsHumanPane() {
     return (
       <div>
         <br/>
@@ -132,10 +132,10 @@ class StartGameModal extends React.Component {
     );
   }
 
-  _tabSection(): Tab {
+  renderTabSection(): Tab {
     let panes = [
-      { menuItem: 'Human vs. Bot', render: () => this._humanVsBotPane() },
-      { menuItem: 'Human vs. Human', render: () => this._humanVsHumanPane() }
+      { menuItem: 'Human vs. Bot', render: () => this.renderHumanVsBotPane() },
+      { menuItem: 'Human vs. Human', render: () => this.renderHumanVsHumanPane() }
     ];
 
     return (
@@ -159,7 +159,7 @@ class StartGameModal extends React.Component {
           Welcome to Scrabble.ai!
         </Header>
         <Modal.Content>
-          {this._tabSection()}
+          {this.renderTabSection()}
         </Modal.Content>
         <Modal.Actions>
           <Button color='teal' disabled={!startEnabled} onClick={this.handleStartGame}>

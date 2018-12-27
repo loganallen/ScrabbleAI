@@ -35,7 +35,7 @@ class GameBoard extends React.Component {
     }
   }
 
-  _gameBoard = (): Grid => {
+  renderGameBoard = (): Grid => {
     let rows = [];
     for (let r=0; r<15; r++) {
       let spaces = [];
@@ -62,7 +62,7 @@ class GameBoard extends React.Component {
     return (
       <Segment raised>
         <div id='gameBoard'>
-          {this._gameBoard()}
+          {this.renderGameBoard()}
         </div>
       </Segment>
     );

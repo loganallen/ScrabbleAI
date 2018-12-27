@@ -32,7 +32,7 @@ class Scrabble extends React.Component {
     this.state = {};
   }
 
-  _message(): Message {
+  renderMessage(): Message {
     let color;
     switch (this.props.message.status) {
       case 'success':
@@ -86,7 +86,7 @@ class Scrabble extends React.Component {
             onSkipTurn={this.props.onSkipTurn}
             onPlayBot={this.props.onPlayBot}
           />
-          {this.props.message && this._message()}
+          {this.props.message && this.renderMessage()}
         </div>
       </div>
     );

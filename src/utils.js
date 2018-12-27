@@ -23,6 +23,7 @@ export const boardSpaceMap = {
 
 // TODO: Add 2 blank tiles
 export const scrabbleLetters = {
+  0: [['',2]],
   1: [['E',12], ['A',9], ['I',9], ['O',8], ['N',6], ['R',6], ['T',6], ['L',4], ['S',4], ['U',4]],
   2: [['D',4], ['G',3]],
   3: [['B',2], ['C',2], ['M',2], ['P',2]],
